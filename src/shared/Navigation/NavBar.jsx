@@ -58,12 +58,21 @@ export default function Navbar() {
           <NavLink to="/auth">
             <FaUser />
           </NavLink>
+          <NavLink to="/auth">
+            <FaShoppingBag />
+          </NavLink>
         </div>
       </div>
 
       {/* Navigation Links (desktop only) */}
       <ul className="nav-links">
-        <NavLink to="/new-arrivals">New Arrivals</NavLink>
+        <NavLink to="/">Home</NavLink>
+        {/* <NavLink to="/limited-edition">Limited Edition</NavLink> */}
+        <NavLink to="/limited-edition" className="limited-link">
+          Limited Edition
+          <span className="limited-badge">🔥</span>
+        </NavLink>
+
         <NavLink to="/add">Add Products</NavLink>
         <NavLink to="/best-seller">Best Seller</NavLink>
         <li className="dropdown">
@@ -77,7 +86,7 @@ export default function Navbar() {
           </div>
         </li>
         <li>
-          <NavLink to="/about">About Us</NavLink>
+          <NavLink to="/aboutus">About Us</NavLink>
         </li>
       </ul>
 

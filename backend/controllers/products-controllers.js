@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const fs = require("fs");
+const path = require("path");
 const { validationResult } = require("express-validator");
 const HttpError = require("../models/http-error");
 
@@ -17,10 +18,12 @@ const addProduct = async (req, res, next) => {
 
   const { name, price, category, description, quantity } = req.body;
 
+  const imagePath = req.file?.path.replace(/\\/g, "/");
+
   const createdProduct = new Product({
     name,
     price,
-    image: req.file.path,
+    image: imagePath,
     category,
     description,
     quantity,
@@ -90,5 +93,26 @@ const updateProduct = async (req, res, next) => {
   }
 };
 
+const getProductByCategory = async (req, res, next) => {
+  try {
+    const { category } = req.params;
+    if (!category) {
+      return res.status(400).json({ message: "Category is required" });
+    }
+
+    const products = await Product.find({ category: category.toLowerCase() });
+    if (!products || products.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No products found in this category" });
+    }
+
+    res.status(200).json(products);
+  } catch (err) {
+    next(err);
+  }
+};
+
 exports.addProduct = addProduct;
 exports.updateProduct = updateProduct;
+exports.getProductByCategory = getProductByCategory;

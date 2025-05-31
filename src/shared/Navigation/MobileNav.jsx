@@ -28,6 +28,19 @@ export default function MobileNav({
       </form>
 
       <ul className="mobile-links">
+        <NavLink to="/" onClick={toggleDrawer}>
+          Home
+        </NavLink>
+        {/* <NavLink to="/limited-edition">Limited Edition</NavLink> */}
+        <NavLink
+          to="/limited-edition"
+          className="limited-link"
+          onClick={toggleDrawer}
+        >
+          Limited Edition
+          <span className="limited-badge">🔥</span>
+        </NavLink>
+
         <NavLink to="/new-arrivals" onClick={toggleDrawer}>
           New Arrivals
         </NavLink>

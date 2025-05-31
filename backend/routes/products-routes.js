@@ -49,4 +49,6 @@ router.patch(
   productsControllers.updateProduct
 );
 
+router.get("/:category", productsControllers.getProductByCategory);
+
 module.exports = router;
