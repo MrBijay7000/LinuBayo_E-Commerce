@@ -1,0 +1,58 @@
+import { FaTimes } from "react-icons/fa";
+import { NavLink } from "react-router-dom";
+import "./MobileNav.css";
+
+export default function MobileNav({
+  toggleDrawer,
+  query,
+  setQuery,
+  handleSearch,
+}) {
+  return (
+    <div className="mobile-drawer open">
+      <div className="drawer-header">
+        <button className="close-btn" onClick={toggleDrawer}>
+          <FaTimes />
+        </button>
+      </div>
+
+      {/* 🔍 Mobile Search */}
+      <form className="mobile-search" onSubmit={(e) => handleSearch(e)}>
+        <input
+          type="text"
+          placeholder="Search..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+        <button type="submit">🔍</button>
+      </form>
+
+      <ul className="mobile-links">
+        <NavLink to="/new-arrivals" onClick={toggleDrawer}>
+          New Arrivals
+        </NavLink>
+        <NavLink to="/best-seller" onClick={toggleDrawer}>
+          Best Seller
+        </NavLink>
+        <NavLink to="/tops" onClick={toggleDrawer}>
+          Tops
+        </NavLink>
+        <NavLink to="/pants" onClick={toggleDrawer}>
+          Pants
+        </NavLink>
+        <NavLink to="/dresses" onClick={toggleDrawer}>
+          Dresses
+        </NavLink>
+        <NavLink to="/skirts" onClick={toggleDrawer}>
+          Skirts
+        </NavLink>
+        <NavLink to="/coord" onClick={toggleDrawer}>
+          Co-ords
+        </NavLink>
+        <NavLink to="/about" onClick={toggleDrawer}>
+          About Us
+        </NavLink>
+      </ul>
+    </div>
+  );
+}

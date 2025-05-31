@@ -1,0 +1,150 @@
+.navbar {
+  background: #ffffff;
+  padding: 12px 24px;
+  font-family: "Raleway", sans-serif;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  position: relative;
+}
+
+.nav-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-icons {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* NEW: Wrap search and nav-links in one centered container */
+.nav-center-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+/* Keep search-container style as is */
+.search-container {
+  display: flex;
+  align-items: center;
+  background: #f2f2f2;
+  padding: 6px 14px;
+  border-radius: 25px;
+  border: 1px solid #ddd;
+  max-width: 400px;
+  width: 100%;
+}
+
+.search-container input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 6px 10px;
+  font-size: 14px;
+  outline: none;
+  font-family: inherit;
+}
+
+.search-container svg {
+  font-size: 16px;
+  color: #666;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+/* Center nav-links below search bar */
+.nav-links {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  font-size: 14px;
+  margin-top: 12px;
+  list-style: none;
+  padding: 0;
+}
+
+.nav-links li {
+  display: flex;
+  align-items: center;
+}
+
+.nav-links a,
+.dropbtn {
+  position: relative;
+  padding: 6px 0;
+  color: #333;
+  text-decoration: none;
+  transition: all 0.2s;
+  font-weight: 500;
+  border-bottom: 2px solid transparent; /* Prevent layout shift */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.nav-links a:hover,
+.dropbtn:hover {
+  color: #000;
+  border-bottom: 2px solid black;
+}
+
+.nav-links a.active,
+.dropbtn.active {
+  color: #000;
+  font-weight: 700;
+  border-bottom: 2px solid black;
+}
+
+/* ====== Dropdown ====== */
+.dropdown {
+  position: relative;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 160px;
+  background: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown-content a {
+  display: block;
+  padding: 10px 16px;
+  text-decoration: none;
+  color: #333;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.dropdown-content a:hover {
+  background: #f6f6f6;
+  color: #000;
+}
+
+/* Responsive: hide search and nav-links on small screens */
+@media (max-width: 768px) {
+  .search-container,
+  .nav-links {
+    display: none;
+  }
+}

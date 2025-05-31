@@ -1,37 +1,22 @@
-import React, { useContext, useState } from "react";
-import {
-  FaSearch,
-  FaUser,
-  FaHeart,
-  FaShoppingBag,
-  FaUserCircle,
-} from "react-icons/fa";
+import React, { useState } from "react";
+import { FaSearch, FaUser, FaShoppingBag, FaBars } from "react-icons/fa";
 import { NavLink, useNavigate } from "react-router-dom";
 
 import "./NavBar.css";
+import MobileNav from "./MobileNav";
 
 export default function Navbar() {
-  // const auth = useContext(AuthContext);
-  // const { clearCart, items } = useContext(CartContext);
-
-  // const totalCartItems = items.reduce(
-  //   (total, item) => total + item.quantity,
-  //   0
-  // );
-
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const [query, setQuery] = useState("");
   const navigate = useNavigate();
 
-  // const handleLogout = () => {
-  //   auth.logout();
-  //   clearCart();
-  //   navigate("/");
-  // };
+  const toggleDrawer = () => {
+    setDrawerOpen(!drawerOpen);
+  };
 
   const handleSearch = (e) => {
     e.preventDefault();
     if (query.trim()) {
-      // navigate(`/search?query=${encodeURIComponent(query.trim())}`);
       navigate(`/search?query=${encodeURIComponent(query.trim())}`);
     }
   };
@@ -39,11 +24,22 @@ export default function Navbar() {
   return (
     <nav className="navbar">
       <div className="nav-inner">
-        <NavLink to="/" className="logo">
-          LINUBAYO
-        </NavLink>
+        <div className="nav-left">
+          <button
+            className="mobile-menu-icon"
+            onClick={toggleDrawer}
+            aria-label="Open navigation menu"
+          >
+            <FaBars />
+          </button>
+          <NavLink to="/" className="logo">
+            LINUBAYO
+          </NavLink>
+        </div>
 
-        {/* 🔍 Global Search Bar */}
+        {/* Search (desktop only, hidden on mobile via CSS) */}
+
+        {/* <div className="nav-center"> */}
         <form className="search-container" onSubmit={handleSearch}>
           <input
             type="text"
@@ -55,114 +51,21 @@ export default function Navbar() {
             <FaSearch />
           </button>
         </form>
-        {/* <div className="search-container">
-          <SearchBar />
-        </div> */}
+        {/* </div> */}
 
-        {/* 👤 Icons */}
+        {/* Icons (desktop only, hidden on mobile via CSS) */}
         <div className="nav-icons">
           <NavLink to="/auth">
             <FaUser />
           </NavLink>
-          {/* {auth.isLoggedIn ? (
-            <>
-              <NavLink to="/profile">
-                <FaUser />
-              </NavLink>
-              <button onClick={handleLogout} className="logout-btn">
-                Log Out
-              </button>
-            </>
-          ) : (
-            <NavLink to="/auth">
-              <FaUser />
-            </NavLink>
-          )} */}
-
-          {/* {auth.isLoggedIn && (
-            <NavLink to="/myDetails">
-              <FaUserCircle />
-            </NavLink>
-          )} */}
-
-          {/* {auth.isLoggedIn && } */}
-          {/* {auth.role === "user" ? (
-            <NavLink to="/cart" className="cart-icon">
-              <FaShoppingBag />
-              {totalCartItems > 0 && (
-                <span className="cart-badge">{totalCartItems}</span>
-              )}
-            </NavLink>
-          ) : null} */}
         </div>
       </div>
 
-      {/* 🔗 Navigation Links */}
+      {/* Navigation Links (desktop only) */}
       <ul className="nav-links">
-        {/* <li>
-          <NavLink
-            to={
-              auth.isLoggedIn ? (auth.role === "admin" ? "/admin" : "/") : "/"
-            }
-          >
-            {auth.isLoggedIn
-              ? auth.role === "admin"
-                ? "Admin Page"
-                : "Home Page"
-              : "Home"}
-          </NavLink>
-        </li> */}
-
         <NavLink to="/new-arrivals">New Arrivals</NavLink>
-
-        {/* {(!auth.isLoggedIn || auth.role === "user") && (
-          <li>
-            <NavLink to="/new-arrivals">New Arrivals</NavLink>
-          </li>
-        )} */}
         <NavLink to="/add">Add Products</NavLink>
-
-        {/* {auth.isLoggedIn && auth.role === "admin" && (
-          <li>
-            <NavLink to="/add">Add Products</NavLink>
-          </li>
-        )} */}
         <NavLink to="/best-seller">Best Seller</NavLink>
-
-        {/* {(!auth.isLoggedIn || auth.role === "user") && (
-          <li>
-            <NavLink to="/best-seller">Best Seller</NavLink>
-          </li>
-        )} */}
-        {/* {auth.isLoggedIn && auth.role === "admin" && (
-          <li>
-            <NavLink to="/user-list">View All Users</NavLink>
-          </li>
-        )} */}
-
-        {/* <li>
-          <NavLink to="/best-seller">Best Seller</NavLink>
-        </li> */}
-        {/* {auth.isLoggedIn && auth.role === "admin" ? (
-          <li>
-            <NavLink to="/update/:pid">Update Products</NavLink>
-          </li>
-        ) : (
-          //       {products.map((product) => (
-          //   <li key={product._id}>
-          //     <NavLink to={`/update/${product._id}`}>{product.name}</NavLink>
-          //   </li>
-          // ))}
-          auth.isLoggedIn && (
-            <li>
-              <NavLink to="/best-seller">Best Seller</NavLink>
-            </li>
-          )
-        )} */}
-        {/* <li>
-          <NavLink to="/best-seller">Best Seller</NavLink>
-        </li> */}
-
         <li className="dropdown">
           <span className="dropbtn">Shop By</span>
           <div className="dropdown-content">
@@ -177,6 +80,19 @@ export default function Navbar() {
           <NavLink to="/about">About Us</NavLink>
         </li>
       </ul>
+
+      {/* Mobile Drawer */}
+      {drawerOpen && (
+        <>
+          <div className="drawer-overlay show" onClick={toggleDrawer}></div>
+          <MobileNav
+            toggleDrawer={toggleDrawer}
+            query={query}
+            setQuery={setQuery}
+            handleSearch={handleSearch}
+          />
+        </>
+      )}
     </nav>
   );
 }
