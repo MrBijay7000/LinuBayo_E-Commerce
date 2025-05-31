@@ -1,0 +1,269 @@
+/* General Styles */
+@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@100..900&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Raleway", sans-serif;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0px 20px;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  /* background: transparent; */
+  background: rgba(0, 0, 0, 0.7); /* or a color that suits your theme */
+  backdrop-filter: blur(10px); /* optional, for a nice glassy effect */
+
+  z-index: 1000;
+  font-family: "Raleway", sans-serif;
+}
+
+/* Top Section (Search & Icons) */
+.nav-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding-bottom: 6px;
+}
+
+.logo {
+  font-family: "Antic Didone", serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 22px;
+  align-items: center;
+}
+
+/* Search Bar */
+.search-bar {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 30px;
+  padding: 8px 15px;
+}
+
+.search-bar input {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 16px;
+  width: 350px;
+  color: white;
+}
+
+.search-bar input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.search-bar button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  color: white;
+}
+
+/* Icons */
+.icons {
+  display: flex;
+  gap: 15px;
+  font-size: 20px;
+}
+
+.icon {
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+  color: white;
+}
+
+.icon:hover {
+  transform: scale(1.1);
+}
+
+/* Bottom Section (Navigation Links) */
+.nav-links {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding-top: 10px;
+}
+
+.nav-links ul {
+  list-style: none;
+  display: flex;
+  gap: 15px;
+}
+
+.nav-links ul li a {
+  text-decoration: none;
+  color: white;
+  transition: color 0.3s ease-in-out;
+  font-size: 13px; /* smaller nav text */
+  padding: 5px 8px;
+}
+
+.nav-links ul li a:hover {
+  color: #ff4081;
+}
+
+/* .nav-links ul li .active {
+  color: #ff4081; /* Highlight current page */
+/* font-weight: bold; */
+/* } */
+
+/* Mobile Menu */
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: white;
+}
+
+/* Responsive Styles */
+@media (max-width: 1024px) {
+  .search-bar input {
+    width: 150px;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .nav-links ul {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+}
+
+/* Navigation styling */
+/* .nav {
+  background-color: #fff;
+  padding: 10px 30px;
+  font-family: sans-serif;
+}
+
+.nav-menu {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+  position: relative;
+}
+
+/* Dropdown logic */
+.dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 40px;
+  left: 0;
+  background: #fff0fb;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px 30px;
+  display: flex;
+  gap: 40px;
+  z-index: 1000;
+  border-radius: 10px;
+}
+
+.dropdown-column h4 {
+  color: hotpink;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.dropdown-column a {
+  display: block;
+  color: #333;
+  text-decoration: none;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+/* Show dropdown only on hover */
+.dropdown:hover .dropdown-menu {
+  display: flex;
+}
+*/
+
+/* Dropdown menu styling */
+/* .dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  color: black;
+  min-width: 180px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  z-index: 1000;
+  padding: 0;
+  margin-top: 0.5rem;
+}
+
+.dropdown-menu li {
+  list-style: none;
+  padding: 10px 15px;
+}
+
+.dropdown-menu li a {
+  color: black;
+  text-decoration: none;
+}
+
+.dropdown-menu li:hover {
+  background-color: #f0f0f0;
+} */
+
+.dropdown-menu {
+  background-color: white;
+  color: black;
+}
+
+.dropdown-menu li a {
+  color: black !important;
+  text-decoration: none;
+}
+
+.nav-links ul li a {
+  text-decoration: none;
+  color: white; /* ← This overrides the black color in dropdown */
+  font-size: 14px;
+  transition: color 0.3s ease-in-out;
+}
+
+.nav-links .dropdown-menu li a {
+  color: black;
+}

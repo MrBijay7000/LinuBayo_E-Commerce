@@ -1,0 +1,285 @@
+/*  */
+.navbar {
+  background: white;
+  padding: 10px 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: "Raleway", sans-serif;
+  list-style: none;
+}
+
+.left-section {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  /* flex: 1; */
+}
+
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.logo {
+  color: black;
+  font-weight: bold;
+  font-size: 20px;
+  white-space: nowrap;
+  margin-right: 20px;
+}
+
+.logo:hover {
+  color: #555;
+}
+
+.nav-icons {
+  display: flex;
+  align-items: center;
+  color: black;
+  gap: 15px;
+}
+
+.nav-icons a {
+  color: black;
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+}
+
+.nav-icons a:hover {
+  color: #555;
+}
+
+.nav-icons a.active {
+  color: #555;
+  /* color: #000; */
+}
+
+.nav-icons svg {
+  margin-left: 15px;
+  cursor: pointer;
+}
+
+.nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+  margin-top: 8px;
+  font-size: 14px;
+  justify-content: center;
+}
+
+/* .nav-links a {
+  color: #333;
+  text-decoration: none;
+} */
+
+.nav-links a,
+.dropbtn {
+  color: #333;
+  text-decoration: none;
+  padding: 6px 0;
+  font-size: 14px;
+  transition: 0.2s ease;
+}
+
+.nav-links a:hover,
+.dropbtn:hover {
+  color: black;
+  border-bottom: 2px solid black;
+}
+
+.nav-links a.active {
+  font-weight: bold;
+  color: black;
+  border-bottom: 2px solid black;
+}
+
+/* for collection dropdown */
+.dropdown {
+  position: relative;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  min-width: 150px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown-content a {
+  color: #333;
+  padding: 10px 15px;
+  display: block;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.dropdown-content a:hover {
+  background-color: #eee;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropbtn.active {
+  font-weight: bold;
+  color: black;
+  border-bottom: 2px solid black;
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 10px 16px;
+  }
+
+  .nav-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .nav-icons {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .nav-links a {
+    padding: 6px 0;
+    width: 100%;
+  }
+
+  .dropdown-content {
+    position: static;
+    box-shadow: none;
+    width: 100%;
+  }
+}
+
+.cart-icon {
+  position: relative;
+  display: inline-block;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  background-color: crimson;
+  color: white;
+  font-size: 0.75rem;
+  padding: 2px 6px;
+  border-radius: 50%;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  background: #f4f0eb;
+  border-radius: 25px;
+  padding: 6px 14px;
+  flex: 1;
+  max-width: 500px;
+  margin: 0 20px;
+  border: 1px solid #ddd;
+  transition: box-shadow 0.2s;
+  width: 100%;
+}
+
+.search-container:focus-within {
+  box-shadow: 0 0 0 2px #c4a77d66;
+}
+
+.search-container input {
+  border: none;
+  background: transparent;
+  padding: 6px 10px;
+  width: 100%;
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+}
+
+.search-container svg {
+  font-size: 16px;
+  color: #666;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  padding: 6px 10px;
+  border-radius: 4px;
+  background: white;
+}
+
+.search-box input {
+  border: none;
+  outline: none;
+  flex: 1;
+}
+
+.autocomplete-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #ddd;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 100;
+  border-radius: 0 0 4px 4px;
+}
+
+.autocomplete-item {
+  padding: 8px 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.autocomplete-item:hover {
+  background: #f0f0f0;
+}
+
+.autocomplete-item img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+/*  */
+
+.logout-btn {
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  margin-left: 1rem;
+}
