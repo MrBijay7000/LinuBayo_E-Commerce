@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { FaSearch, FaUser, FaShoppingBag, FaBars } from "react-icons/fa";
 import { NavLink, useNavigate } from "react-router-dom";
 
 import "./NavBar.css";
 import MobileNav from "./MobileNav";
+import { AuthContext } from "../Context/auth-context";
 
 export default function Navbar() {
+  const auth = useContext(AuthContext);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [query, setQuery] = useState("");
   const navigate = useNavigate();
@@ -58,7 +60,7 @@ export default function Navbar() {
           <NavLink to="/auth">
             <FaUser />
           </NavLink>
-          <NavLink to="/auth">
+          <NavLink to="/">
             <FaShoppingBag />
           </NavLink>
         </div>
@@ -73,7 +75,9 @@ export default function Navbar() {
           <span className="limited-badge">🔥</span>
         </NavLink>
 
-        <NavLink to="/add">Add Products</NavLink>
+        {auth.isLoggedIn && auth.role === "admin" && (
+          <NavLink to="/admin/addproduct">Add Products</NavLink>
+        )}
         <NavLink to="/best-seller">Best Seller</NavLink>
         <li className="dropdown">
           <span className="dropbtn">Shop By</span>

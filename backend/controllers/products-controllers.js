@@ -16,18 +16,33 @@ const addProduct = async (req, res, next) => {
     });
   }
 
-  const { name, price, category, description, quantity } = req.body;
+  const { name, price, category, description, quantity, originalPrice } =
+    req.body;
 
   const imagePath = req.file?.path.replace(/\\/g, "/");
 
-  const createdProduct = new Product({
+  // Initial product data
+  const productData = {
     name,
     price,
     image: imagePath,
     category,
     description,
     quantity,
-  });
+  };
+
+  // Add originalPrice if provided
+  if (originalPrice !== undefined) {
+    productData.originalPrice = originalPrice;
+
+    // Calculate discount if originalPrice > 0
+    if (originalPrice > 0 && price >= 0) {
+      const discountPercent = ((originalPrice - price) / originalPrice) * 100;
+      productData.discount = Math.round(discountPercent); // round to nearest integer
+    }
+  }
+
+  const createdProduct = new Product(productData);
 
   try {
     await createdProduct.save();

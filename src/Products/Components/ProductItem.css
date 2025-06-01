@@ -79,6 +79,51 @@
   margin-top: 0.3rem;
 }
 
+/* Original Price with strikethrough and faded color */
+.product-item__original-price {
+  color: #888;
+  text-decoration: line-through;
+  font-size: 0.95rem;
+  margin-right: 0.5rem;
+}
+
+/* Current Price – bold and highlighted */
+.product-item__price {
+  font-size: 1.2rem;
+  color: #ffd700; /* gold */
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+
+/* Discount badge */
+.product-item__discount {
+  background: #ff4d4f;
+  color: #fff;
+  font-weight: bold;
+  font-size: 0.85rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  margin-left: 0.5rem;
+}
+
+/* Group prices in a row with nice spacing */
+.product-item__prices {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  margin-bottom: 0.6rem;
+}
+
+/* Title spacing */
+.product-item__title {
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #f1f1f1;
+  text-align: center;
+}
+
 .product-item__quantity {
   display: inline-block;
   font-weight: bold;

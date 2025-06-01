@@ -7,17 +7,17 @@ const User = require("../models/User");
 const signup = async (req, res, next) => {
   const error = validationResult(req);
 
-  //   if (!error.isEmpty()) {
-  //     return next(
-  //       new HttpError("Invalid inputs passed, please check your data.", 422)
-  //     );
-  //   }
   if (!error.isEmpty()) {
-    return res.status(422).json({
-      message: "Validation failed",
-      errors: error.array(),
-    });
+    return next(
+      new HttpError("Invalid inputs passed, please check your data.", 422)
+    );
   }
+  //   if (!error.isEmpty()) {
+  //     return res.status(422).json({
+  //       message: "Validation failed",
+  //       errors: error.array(),
+  //     });
+  //   }
 
   const { name, email, phonenumber, password } = req.body;
 
@@ -40,6 +40,7 @@ const signup = async (req, res, next) => {
     return next(error);
   }
 
+  const role = email === "admin@admin.com" ? "admin" : "user"; // optional logic
   let hashedPassword;
   try {
     hashedPassword = await bcrypt.hash(password, 12);
@@ -56,6 +57,7 @@ const signup = async (req, res, next) => {
     email,
     phonenumber,
     password: hashedPassword,
+    role,
   });
 
   try {

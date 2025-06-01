@@ -1,6 +1,8 @@
 import { FaTimes } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import "./MobileNav.css";
+import { useContext } from "react";
+import { AuthContext } from "../Context/auth-context";
 
 export default function MobileNav({
   toggleDrawer,
@@ -8,6 +10,7 @@ export default function MobileNav({
   setQuery,
   handleSearch,
 }) {
+  const auth = useContext(AuthContext);
   return (
     <div className="mobile-drawer open">
       <div className="drawer-header">
@@ -40,7 +43,9 @@ export default function MobileNav({
           Limited Edition
           <span className="limited-badge">🔥</span>
         </NavLink>
-
+        {auth.isLoggedIn && auth.role === "admin" && (
+          <NavLink to="/admin/addproduct">Add Products</NavLink>
+        )}
         <NavLink to="/new-arrivals" onClick={toggleDrawer}>
           New Arrivals
         </NavLink>

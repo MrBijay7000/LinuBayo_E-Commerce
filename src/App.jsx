@@ -6,6 +6,11 @@ import HomePage from "./Products/Pages/HomePage";
 import TopsPage from "./Products/Pages/TopsPage";
 import LimitedEditionPage from "./Products/Pages/LimitedEditionPage";
 import AboutUs from "./shared/FormElements/AboutPage";
+import PantsPage from "./Products/Pages/PantsPage";
+import AdminAddProduct from "./Users/pages/AdminAddProduct";
+import AuthPage from "./Users/pages/AuthPage";
+import { AuthContext } from "./shared/Context/auth-context";
+import { useCallback, useState } from "react";
 
 const routes = [
   {
@@ -15,7 +20,10 @@ const routes = [
       { path: "/", element: <HomePage /> },
       { path: "/tops", element: <TopsPage /> },
       { path: "/limited-edition", element: <LimitedEditionPage /> },
+      { path: "/pants", element: <PantsPage /> },
       { path: "/aboutus", element: <AboutUs /> },
+      { path: "/auth", element: <AuthPage /> },
+      { path: "/admin/addproduct", element: <AdminAddProduct /> },
     ],
   },
 ];
@@ -23,5 +31,21 @@ const routes = [
 const router = createBrowserRouter(routes);
 
 export default function App() {
-  return <RouterProvider router={router} />;
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const login = useCallback(() => {
+    setIsLoggedIn(true);
+  }, []);
+
+  const logout = useCallback(() => {
+    setIsLoggedIn(false);
+  }, []);
+
+  return (
+    <>
+      <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+        <RouterProvider router={router} />
+      </AuthContext.Provider>
+    </>
+  );
 }

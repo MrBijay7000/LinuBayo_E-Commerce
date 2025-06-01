@@ -10,14 +10,29 @@ export default function ProductItem(props) {
           <img src={`http://localhost:5001/${props.image}`} alt={props.name} />
         </div>
         <div className="product-item__info">
-          <h2 className="product-item__title">
-            {props.name} <br />
-            <span className="product-item__price">Rs {props.price}</span>
-          </h2>
+          <h2 className="product-item__title">{props.name}</h2>
+
+          <div className="product-item__prices">
+            {props.originalPrice && (
+              <span className="product-item__original-price">
+                Original: Rs {props.originalPrice}
+              </span>
+            )}
+            <span className="product-item__price">
+              Offer Price: Rs {props.price}
+            </span>
+            {props.discount && (
+              <span className="product-item__discount">
+                -{props.discount}% OFF
+              </span>
+            )}
+          </div>
+
           <span className="product-item__quantity">
             Quantity: {props.quantity}
           </span>
         </div>
+
         <div className="product-item__buttons">
           <button>VIEW DETAILS</button>
           <button>DELETE</button>

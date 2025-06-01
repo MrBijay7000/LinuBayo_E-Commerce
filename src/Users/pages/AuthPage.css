@@ -1,0 +1,32 @@
+.authentication__header {
+  color: white;
+  text-align: center;
+}
+
+.authentication {
+  width: 90%;
+  max-width: 25rem;
+  margin: 7rem auto;
+  text-align: center;
+  position: relative;
+}
+
+.authentication form {
+  margin-bottom: 1rem;
+}
+
+.auth-toggle button {
+  background: none;
+  border: none;
+  /* color: #4f46e5; */
+  color: #928cff;
+  font-weight: 600;
+  cursor: pointer;
+  padding-left: 0.3rem;
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
+}
+
+.auth-toggle button:hover {
+  color: #928cff;
+}
