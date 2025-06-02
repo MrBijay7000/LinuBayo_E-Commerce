@@ -68,7 +68,11 @@ export default function Navbar() {
 
       {/* Navigation Links (desktop only) */}
       <ul className="nav-links">
-        <NavLink to="/">Home</NavLink>
+        {auth.role === "admin" ? (
+          <NavLink to="/admin/homepage">Admin Home page</NavLink>
+        ) : (
+          <NavLink to="/">Home</NavLink>
+        )}
         {/* <NavLink to="/limited-edition">Limited Edition</NavLink> */}
         <NavLink to="/limited-edition" className="limited-link">
           Limited Edition

@@ -36,6 +36,18 @@
   transition: all 0.3s ease-in-out;
 }
 
+/* .button--inverse {
+  background: transparent;
+  color: #ff0055;
+  border: 2px solid #ff0055;
+  border-radius: 6px;
+  padding: 0.6rem 1.2rem;
+  font-weight: 600;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  box-shadow: 0 0 0 transparent;
+} */
+
 .button--inverse:hover,
 .button--inverse:active {
   background: #ff0055;

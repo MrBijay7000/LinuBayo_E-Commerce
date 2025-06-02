@@ -49,7 +49,7 @@ export default function AdminUpdateProduct() {
     const fetchProduct = async () => {
       try {
         const responseData = await sendRequest(
-          `http://localhost:5001/api/products/${pid}`
+          `http://localhost:5001/api/products/getProduct/${pid}`
         );
 
         setLoadedProduct(responseData);
@@ -95,7 +95,7 @@ export default function AdminUpdateProduct() {
 
     try {
       await sendRequest(
-        `http://localhost:5001/api/products/${pid}`,
+        `http://localhost:5001/api/products/updateProduct/${pid}`,
         "PATCH",
         JSON.stringify({
           name: formState.inputs.name.value,

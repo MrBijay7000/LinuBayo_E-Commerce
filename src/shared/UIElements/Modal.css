@@ -5,12 +5,13 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  width: 95%; /* Take up most of screen on mobile */
+  max-width: 600px; /* Maximum width for larger screens */
 }
 
 /* Modal Styles */
 .modal {
-  width: 95%;
-  width: 600px;
+  width: 100%; /* Full width of its container */
   max-height: 90vh;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(20px);
@@ -24,12 +25,10 @@
 
 /* Header */
 .modal__header {
-  padding: 0rem 1.5rem;
-  /* background: linear-gradient(to right, #7f5af0, #2cb67d); */
-  background: linear-gradient(135deg, #8ca5bf, #bab4b4);
-
+  padding: 0.5rem 1rem; /* Reduced padding for mobile */
+  background-color: rgb(29, 28, 28);
   color: white;
-  font-size: 1.25rem;
+  font-size: 1.1rem; /* Smaller font for mobile */
   font-weight: 600;
   text-align: center;
 }
@@ -65,8 +64,8 @@
 
 /* Content */
 .modal__content {
-  padding: 2rem 1.5rem;
-  font-size: 1.5rem;
+  padding: 1.5rem 1rem; /* Reduced padding for mobile */
+  font-size: 1.1rem; /* Smaller font for mobile */
   color: #ffffff;
   flex-grow: 1;
   overflow-y: auto;
@@ -75,33 +74,103 @@
 
 /* Footer */
 .modal__footer {
-  padding: 1rem 1.5rem;
+  padding: 0.8rem 1rem; /* Reduced padding */
   display: flex;
-  justify-content: flex-end;
-  gap: 0.75rem;
+  flex-wrap: wrap; /* Allow buttons to wrap on small screens */
+  justify-content: center; /* Center buttons on mobile */
+  gap: 0.5rem; /* Smaller gap */
   background-color: rgba(255, 255, 255, 0.05);
 }
 
 /* Buttons */
 .modal__footer button {
-  padding: 0.6rem 1.4rem;
-  font-size: 1rem;
+  padding: 0.5rem 1rem; /* Smaller buttons */
+  font-size: 0.9rem; /* Smaller font */
   font-weight: 600;
-  background: #ff5a5f;
+  /* background: #ff5a5f; */
   color: white;
   border: none;
-  border-radius: 10px;
+  border-radius: 8px; /* Slightly smaller radius */
   cursor: pointer;
   transition: background 0.2s ease, transform 0.2s ease;
+  flex: 1; /* Allow buttons to grow/shrink */
+  min-width: 100px; /* Minimum width */
 }
 
-.modal__footer button:hover {
-  background: #e63946;
-  transform: scale(1.05);
+/* Media Queries for Larger Screens */
+@media (min-width: 768px) {
+  .modal__wrapper {
+    width: 85%; /* Slightly more width on tablets */
+  }
+
+  .modal__header {
+    padding: 0rem 1.5rem;
+    font-size: 1.25rem;
+  }
+
+  .modal__header span {
+    font-size: 2rem;
+    padding: 1.2rem;
+  }
+
+  .modal__content {
+    padding: 2rem 1.5rem;
+    font-size: 1.5rem;
+  }
+
+  .modal__footer {
+    padding: 1rem 1.5rem;
+    justify-content: flex-end; /* Right-align on desktop */
+    gap: 0.75rem;
+  }
+
+  .modal__footer button {
+    padding: 0.6rem 1.4rem;
+    font-size: 1rem;
+    flex: none; /* Don't grow/shrink on desktop */
+  }
 }
 
-/* CSSTransition Animations */
+/* Extra Small Devices */
+@media (max-width: 480px) {
+  .modal {
+    max-height: 85vh; /* Slightly less height */
+    border-radius: 12px; /* Smaller radius */
+  }
 
+  .modal__header span {
+    font-size: 1.2rem; /* Even smaller text */
+    padding: 0.5rem;
+  }
+
+  .modal__content {
+    padding: 1rem 0.8rem;
+    font-size: 1rem;
+  }
+
+  .modal__footer {
+    flex-direction: column; /* Stack buttons vertically */
+    gap: 0.5rem;
+  }
+
+  .modal__footer button {
+    width: 100%; /* Full width buttons */
+  }
+}
+
+/* Landscape Orientation on Mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+  .modal {
+    max-height: 80vh; /* Reduce height for landscape */
+  }
+
+  .modal__content {
+    padding: 0.8rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* CSSTransition Animations (unchanged) */
 .modal-enter {
   opacity: 0;
   transform: scale(0.9);

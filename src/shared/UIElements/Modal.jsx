@@ -21,9 +21,9 @@ const ModalOverlay = forwardRef((props, ref) => {
         </header> */}
         <header className={`modal__header ${props.headerClass || ""}`}>
           <div className="modal__shimmer-header">
-            <span>An Error Occurred!</span>
+            <span>{props.header || "An Error Occured!"}</span>
           </div>
-          {/* {props.header && <h2>{props.header}</h2>} */}
+          {/* {props.header && <h2>{props.header || "An Error Occured!"}</h2>} */}
         </header>
 
         <div className={`modal__content ${props.contentClass || ""}`}>

@@ -13,6 +13,7 @@ import { AuthContext } from "./shared/Context/auth-context";
 import { useCallback, useState } from "react";
 import AdminUpdateProduct from "./Users/pages/AdminUpdateProduct";
 import { useAuth } from "./shared/hooks/auth-hook";
+import AdminHomePage from "./Users/pages/AdminHomePage";
 
 const routes = [
   {
@@ -26,6 +27,7 @@ const routes = [
       { path: "/aboutus", element: <AboutUs /> },
       { path: "/auth", element: <AuthPage /> },
       { path: "/admin/addProduct", element: <AdminAddProduct /> },
+      { path: "/admin/homepage", element: <AdminHomePage /> },
       { path: "/admin/updateProduct/:pid", element: <AdminUpdateProduct /> },
     ],
   },

@@ -51,6 +51,6 @@ router.patch(
 
 router.get("/:category", productsControllers.getProductByCategory);
 
-router.get("/:pid", productsControllers.getProductDetails);
+router.get("/getProduct/:pid", productsControllers.getProductDetails);
 
 module.exports = router;
