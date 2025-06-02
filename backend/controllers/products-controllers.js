@@ -128,6 +128,25 @@ const getProductByCategory = async (req, res, next) => {
   }
 };
 
+const getProductDetails = async (req, res, next) => {
+  try {
+    const { pid } = req.params;
+    if (!pid) {
+      return res.status(400).json({ message: "Product ID is required" });
+    }
+
+    const product = await Product.findById(pid);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    res.status(200).json(product);
+  } catch (err) {
+    next(err);
+  }
+};
+
 exports.addProduct = addProduct;
 exports.updateProduct = updateProduct;
 exports.getProductByCategory = getProductByCategory;
+exports.getProductDetails = getProductDetails;

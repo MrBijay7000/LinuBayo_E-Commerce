@@ -84,7 +84,7 @@ export default function AuthPage() {
         { "Content-Type": "application/json" }
       );
 
-      auth.login(responseData.userId, responseData.token);
+      auth.login(responseData.userId, responseData.token, responseData.role);
       toast.success("Login successful!");
     } catch (err) {
       toast.error(err.message || "Authentication failed. Please try again.");
@@ -146,8 +146,13 @@ export default function AuthPage() {
         }),
         { "Content-Type": "application/json" }
       );
+      console.log(loginResponse);
 
-      auth.login(loginResponse.userId, loginResponse.token);
+      auth.login(
+        loginResponse.userId,
+        loginResponse.token,
+        loginResponse.token
+      );
       console.log(loginResponse);
       toast.success("Account created successfully! Welcome!");
     } catch (err) {

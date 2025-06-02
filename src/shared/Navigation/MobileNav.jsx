@@ -44,7 +44,7 @@ export default function MobileNav({
           <span className="limited-badge">🔥</span>
         </NavLink>
         {auth.isLoggedIn && auth.role === "admin" && (
-          <NavLink to="/admin/addproduct">Add Products</NavLink>
+          <NavLink to="/admin/addProduct">Add Products</NavLink>
         )}
         <NavLink to="/new-arrivals" onClick={toggleDrawer}>
           New Arrivals

@@ -76,7 +76,7 @@ export default function Navbar() {
         </NavLink>
 
         {auth.isLoggedIn && auth.role === "admin" && (
-          <NavLink to="/admin/addproduct">Add Products</NavLink>
+          <NavLink to="/admin/addProduct">Add Products</NavLink>
         )}
         <NavLink to="/best-seller">Best Seller</NavLink>
         <li className="dropdown">

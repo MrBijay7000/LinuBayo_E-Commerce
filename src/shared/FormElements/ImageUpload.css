@@ -1,0 +1,113 @@
+/* ImageUpload.css */
+
+.image-upload__form-control {
+  margin: 1rem 0;
+}
+
+.image-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.image-upload.center {
+  justify-content: center;
+  text-align: center;
+}
+
+.image-upload__preview {
+  width: 12rem;
+  height: 12rem;
+  border: 2px dashed #ccc;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background-color: #f8f8f8;
+  text-align: center; /* Center text horizontally */
+  transition: border-color 0.3s ease;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+}
+
+.image-upload__preview:hover {
+  border-color: #007bff;
+}
+
+.image-upload__preview p {
+  margin: 0; /* Remove any default margin */
+  color: #888;
+  font-size: 0.9rem;
+}
+
+.image-upload__preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0.5rem;
+}
+
+/* ImageUploadButton.css */
+
+.image-upload button {
+  background-color: #17a2b8; /* a distinct color from add-product (teal/blue) */
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 2px 6px rgba(23, 162, 184, 0.4);
+}
+
+.image-upload button:hover {
+  background-color: #138496; /* darken on hover */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(19, 132, 150, 0.6);
+}
+
+.image-upload button:active {
+  background-color: #117a8b;
+  transform: translateY(0);
+}
+
+.image-upload button:disabled {
+  background-color: #b0dfe3;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.image-upload p {
+  color: #888;
+  font-size: 0.85rem;
+}
+
+.image-upload .form-control p {
+  color: #d9534f; /* red for error */
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  text-align: center;
+}
+
+@keyframes glow {
+  0% {
+    box-shadow: 0 0 5px #00e0ff;
+  }
+  50% {
+    box-shadow: 0 0 15px #00e0ff, 0 0 30px #00e0ff;
+  }
+  100% {
+    box-shadow: 0 0 5px #00e0ff;
+  }
+}
+
+.image-upload__preview--glow {
+  animation: glow 1.5s infinite;
+  border-color: #00e0ff;
+}

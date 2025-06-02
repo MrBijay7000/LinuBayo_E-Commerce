@@ -11,6 +11,8 @@ import AdminAddProduct from "./Users/pages/AdminAddProduct";
 import AuthPage from "./Users/pages/AuthPage";
 import { AuthContext } from "./shared/Context/auth-context";
 import { useCallback, useState } from "react";
+import AdminUpdateProduct from "./Users/pages/AdminUpdateProduct";
+import { useAuth } from "./shared/hooks/auth-hook";
 
 const routes = [
   {
@@ -23,7 +25,8 @@ const routes = [
       { path: "/pants", element: <PantsPage /> },
       { path: "/aboutus", element: <AboutUs /> },
       { path: "/auth", element: <AuthPage /> },
-      { path: "/admin/addproduct", element: <AdminAddProduct /> },
+      { path: "/admin/addProduct", element: <AdminAddProduct /> },
+      { path: "/admin/updateProduct/:pid", element: <AdminUpdateProduct /> },
     ],
   },
 ];
@@ -31,15 +34,19 @@ const routes = [
 const router = createBrowserRouter(routes);
 
 export default function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { token, login, logout, userId, role } = useAuth();
 
-  const login = useCallback(() => {
-    setIsLoggedIn(true);
-  }, []);
+  // const [userId, setUserId] = useState(false);
 
-  const logout = useCallback(() => {
-    setIsLoggedIn(false);
-  }, []);
+  // const login = useCallback(() => {
+  //   setIsLoggedIn(true);
+  //   setUserId(userId);
+  // }, []);
+
+  // const logout = useCallback(() => {
+  //   setIsLoggedIn(false);
+  //   setUserId(null);
+  // }, []);
 
   return (
     <>
@@ -49,7 +56,9 @@ export default function App() {
         hideProgressBar
         theme="colored"
       />
-      <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+      <AuthContext.Provider
+        value={{ isLoggedIn: !!token, userId, login, logout, role }}
+      >
         <RouterProvider router={router} />
       </AuthContext.Provider>
     </>

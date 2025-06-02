@@ -1,7 +1,14 @@
+import { useNavigate, useParams } from "react-router-dom";
 import Card from "../../shared/UIElements/Card";
 import "./ProductItem.css";
 
 export default function ProductItem(props) {
+  const navigate = useNavigate();
+
+  function updateProductHandler() {
+    navigate(`/admin/updateProduct/${props.id}`);
+  }
+
   return (
     <li className="product-item">
       <Card className="product-item__content">
@@ -35,6 +42,7 @@ export default function ProductItem(props) {
 
         <div className="product-item__buttons">
           <button>VIEW DETAILS</button>
+          <button onClick={updateProductHandler}>UPDATE</button>
           <button>DELETE</button>
         </div>
       </Card>
