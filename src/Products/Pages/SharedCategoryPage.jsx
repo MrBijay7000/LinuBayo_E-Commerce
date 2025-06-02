@@ -1,27 +1,47 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import ErrorModal from "../../shared/UIElements/ErrorModal";
+import LoadingSpinner from "../../shared/UIElements/LoadingSpinner";
 import ProductList from "../Components/ProductList";
+import { useHttpClient } from "../../shared/hooks/http-hook";
 
 export default function SharedCategoryPage({ category, placeholder }) {
-  const [products, setProducts] = useState([]);
+  const { isLoading, error, sendRequest, clearError } = useHttpClient(); // Missing parentheses here
+
+  const [loadedProducts, setLoadedProducts] = useState([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch(
+        const responseData = await sendRequest(
           `http://localhost:5001/api/products/${category}`
         );
-
-        if (!response.ok) {
-          throw new Error("Something went wrong, could not fetch products");
-        }
-        const data = await response.json();
-        setProducts(data);
+        console.log("Fetching products for category:", category);
+        setLoadedProducts(responseData.products || responseData); // Handle both response formats
       } catch (err) {
-        console.log(err);
+        // Error is already handled by the http-hook
+        console.error("Failed to fetch products:", err);
       }
     };
-    fetchProducts();
-  }, []);
 
-  return <ProductList items={products} />;
+    fetchProducts();
+  }, [category, sendRequest]);
+
+  return (
+    <>
+      <ErrorModal error={error} onClear={clearError} />
+      {isLoading && (
+        <div className="center">
+          <LoadingSpinner />
+        </div>
+      )}
+      {!isLoading && loadedProducts && loadedProducts.length > 0 && (
+        <ProductList items={loadedProducts} />
+      )}
+      {!isLoading && loadedProducts && loadedProducts.length === 0 && (
+        <div className="center">
+          <h2>{"No products found in this category"}</h2>
+        </div>
+      )}
+    </>
+  );
 }

@@ -8,21 +8,20 @@ import {
   VALIDATOR_REQUIRE,
 } from "../../util/validators";
 import { toast } from "react-toastify";
-
 import "./AuthPage.css";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../shared/Context/auth-context";
 import LoadingSpinner from "../../shared/UIElements/LoadingSpinner";
 import ErrorModal from "../../shared/UIElements/ErrorModal";
+import { useHttpClient } from "../../shared/hooks/http-hook";
 
 export default function AuthPage() {
   const auth = useContext(AuthContext);
   const [otp, setOtp] = useState("");
-  const [step, setStep] = useState("signup"); // or 'otp'
-
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState();
+  const [step, setStep] = useState("signup");
+  const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [isLoginMode, setIsLoginMode] = useState(true);
+  const [isSendingOtp, setIsSendingOtp] = useState(false);
 
   const [formState, inputHandler, setFormData] = useForm(
     isLoginMode
@@ -39,208 +38,129 @@ export default function AuthPage() {
     false
   );
 
-  function toggleForm() {
+  const toggleForm = () => {
     setOtp("");
     setStep("signup");
-
-    if (!isLoginMode) {
-      // Switching to login
-      setFormData(
-        {
-          email: { value: "", isValid: false },
-          password: { value: "", isValid: false },
-        },
-        false
-      );
-    } else {
-      // Switching to signup
-      setFormData(
-        {
-          name: { value: "", isValid: false },
-          email: { value: "", isValid: false },
-          phonenumber: { value: "", isValid: false },
-          password: { value: "", isValid: false },
-        },
-        false
-      );
-    }
-
     setIsLoginMode((prevMode) => !prevMode);
-  }
 
-  async function authSubmitHandler(event) {
+    setFormData(
+      isLoginMode
+        ? {
+            name: { value: "", isValid: false },
+            email: { value: "", isValid: false },
+            phonenumber: { value: "", isValid: false },
+            password: { value: "", isValid: false },
+          }
+        : {
+            email: { value: "", isValid: false },
+            password: { value: "", isValid: false },
+          },
+      false
+    );
+  };
+
+  const authSubmitHandler = async (event) => {
     event.preventDefault();
 
-    if (!isLoginMode) {
-      if (step === "signup") {
-        await sendOtp();
-        return;
-      } else if (step === "otp") {
-        await verifyOtp();
-        return;
-      }
-    }
-
-    // Login logic
     try {
-      setIsLoading(true);
-      const response = await fetch("http://localhost:5001/api/users/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
+      if (!isLoginMode) {
+        if (step === "signup") {
+          await sendOtp();
+          return;
+        } else if (step === "otp") {
+          await verifyOtp();
+          return;
+        }
+      }
+
+      // Login logic
+      const responseData = await sendRequest(
+        "http://localhost:5001/api/users/login",
+        "POST",
+        JSON.stringify({
           email: formState.inputs.email.value,
           password: formState.inputs.password.value,
         }),
-      });
-
-      const responseData = await response.json();
-      if (!response.ok) throw new Error(responseData.message);
+        { "Content-Type": "application/json" }
+      );
 
       auth.login(responseData.userId, responseData.token);
-      setIsLoading(false);
+      toast.success("Login successful!");
     } catch (err) {
-      setIsLoading(false);
-      setError(err.message || "Something went wrong, please try again later.");
+      toast.error(err.message || "Authentication failed. Please try again.");
     }
-  }
-  async function authSubmitHandler(event) {
-    event.preventDefault();
-
-    if (!isLoginMode) {
-      if (step === "signup") {
-        await sendOtp();
-        return;
-      } else if (step === "otp") {
-        await verifyOtp();
-        return;
-      }
-    }
-
-    // Login logic
-    try {
-      setIsLoading(true);
-      const response = await fetch("http://localhost:5001/api/users/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: formState.inputs.email.value,
-          password: formState.inputs.password.value,
-        }),
-      });
-
-      const responseData = await response.json();
-      if (!response.ok) {
-        throw new Error(responseData.message);
-      }
-
-      setIsLoading(false);
-
-      auth.login(responseData.userId, responseData.token);
-      toast.success("Login successful! Welcome back!");
-      console.log("loggedin");
-      console.log(auth);
-    } catch (err) {
-      setIsLoading(false);
-      setError(err.message || "Something went wrong, please try again later.");
-    }
-  }
+  };
 
   const sendOtp = async () => {
-    setIsLoading(true);
+    setIsSendingOtp(true);
     try {
-      const res = await fetch("http://localhost:5001/api/users/send-otp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: formState.inputs.email.value }),
-      });
+      await sendRequest(
+        "http://localhost:5001/api/users/send-otp",
+        "POST",
+        JSON.stringify({ email: formState.inputs.email.value }),
+        { "Content-Type": "application/json" }
+      );
 
-      const data = await res.json();
-      console.log(data);
-
-      if (!res.ok) {
-        if (res.status === 409) {
-          throw new Error("This email is already registered. Please log in.");
-        }
-        throw new Error(data.message || "Something went wrong");
-      }
-
-      toast.info("OTP sent to your email.");
+      toast.info("OTP sent to your email. Check your inbox!");
       setStep("otp");
     } catch (err) {
-      toast.error(err.message || "Failed to send OTP.");
+      toast.error(err.message || "Failed to send OTP. Please try again.");
     } finally {
-      setIsLoading(false);
+      setIsSendingOtp(false);
     }
   };
 
   const verifyOtp = async () => {
     try {
-      setIsLoading(true);
-      // Verify OTP first
-      const res = await fetch("http://localhost:5001/api/users/verify-otp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: formState.inputs.email.value, otp }),
-      });
+      // Verify OTP
+      const otpResponse = await sendRequest(
+        "http://localhost:5001/api/users/verify-otp",
+        "POST",
+        JSON.stringify({
+          email: formState.inputs.email.value,
+          otp,
+        }),
+        { "Content-Type": "application/json" }
+      );
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message);
-
-      // If OTP is valid, proceed with signup
-      const signupRes = await fetch("http://localhost:5001/api/users/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+      // Proceed with signup after OTP verification
+      const signupResponse = await sendRequest(
+        "http://localhost:5001/api/users/signup",
+        "POST",
+        JSON.stringify({
           name: formState.inputs.name.value,
           email: formState.inputs.email.value,
           phonenumber: formState.inputs.phonenumber.value,
           password: formState.inputs.password.value,
         }),
-      });
+        { "Content-Type": "application/json" }
+      );
 
-      const signupData = await signupRes.json();
-      if (!signupRes.ok) {
-        throw new Error(signupData.message);
-      }
-
-      // Automatically log in the user after successful signup
-      const loginRes = await fetch("http://localhost:5001/api/users/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+      // Automatically log in the user
+      const loginResponse = await sendRequest(
+        "http://localhost:5001/api/users/login",
+        "POST",
+        JSON.stringify({
           email: formState.inputs.email.value,
           password: formState.inputs.password.value,
         }),
-      });
+        { "Content-Type": "application/json" }
+      );
 
-      const loginData = await loginRes.json();
-      if (!loginRes.ok) throw new Error(loginData.message);
-
-      // Log the user in and redirect to home
-      setIsLoading(false);
-
-      auth.login(loginData.userId, loginData.token);
-      toast.success("Signup successful! Welcome!");
+      auth.login(loginResponse.userId, loginResponse.token);
+      console.log(loginResponse);
+      toast.success("Account created successfully! Welcome!");
     } catch (err) {
-      setIsLoading(false);
-      toast.error(err.message || "OTP verification failed.");
+      toast.error(err.message || "Signup failed. Please try again.");
     }
   };
 
-  function errorHandler() {
-    setError(null);
-  }
-
   return (
     <>
-      <ErrorModal error={error} onClear={errorHandler} />
+      {/* <ErrorModal error={error} onClear={clearError} /> */}
       <Card className="authentication">
-        {isLoading && <LoadingSpinner asOverlay />}
-        <h2>LOGIN REQUIRED!</h2>
+        {(isLoading || isSendingOtp) && <LoadingSpinner asOverlay />}
+        <h2>{isLoginMode ? "LOGIN" : "CREATE ACCOUNT"}</h2>
         <form onSubmit={authSubmitHandler}>
           {!isLoginMode && step === "signup" && (
             <>
@@ -250,13 +170,13 @@ export default function AuthPage() {
                 type="text"
                 label="Your Name"
                 validators={[VALIDATOR_REQUIRE()]}
-                errorText="Please enter a valid name"
+                errorText="Please enter your name"
                 onInput={inputHandler}
               />
               <Input
                 id="phonenumber"
                 element="input"
-                type="number"
+                type="tel"
                 label="Phone Number"
                 validators={[VALIDATOR_REQUIRE()]}
                 errorText="Please enter a valid phone number"
@@ -271,7 +191,7 @@ export default function AuthPage() {
                 id="email"
                 element="input"
                 type="email"
-                label="E-Mail"
+                label="Email"
                 validators={[VALIDATOR_EMAIL()]}
                 errorText="Please enter a valid email address"
                 onInput={inputHandler}
@@ -282,55 +202,45 @@ export default function AuthPage() {
                 type="password"
                 label="Password"
                 validators={[VALIDATOR_MINLENGTH(6)]}
-                errorText="Please enter a valid password. (At least 6 Characters)"
+                errorText="Password must be at least 6 characters"
                 onInput={inputHandler}
               />
             </>
           )}
 
           {step === "otp" && (
-            <>
+            <div className="otp-container">
               <Input
                 id="otp"
                 element="input"
                 type="text"
-                label="Enter OTP"
+                label="Verification Code"
                 validators={[VALIDATOR_REQUIRE()]}
-                errorText="Please enter the OTP sent to your email."
+                errorText="Please enter the 6-digit code"
                 onInput={(id, value) => setOtp(value)}
               />
-            </>
+              <p className="otp-hint">
+                We've sent a verification code to your email
+              </p>
+            </div>
           )}
 
-          {/* <Button
-            type="submit"
-            disabled={
-              isLoginMode
-                ? !formState.isValid
-                : step === "signup" && !formState.isValid
-            }
-          >
-            {isLoginMode
-              ? "LOGIN"
-              : step === "signup"
-              ? "SIGN UP"
-              : "VERIFY OTP"}
-          </Button> */}
           <Button
             type="submit"
             disabled={
               isLoading ||
+              isSendingOtp ||
               (isLoginMode
                 ? !formState.isValid
-                : step === "signup" && !formState.isValid)
+                : step === "signup"
+                ? !formState.isValid
+                : !otp)
             }
           >
             {isLoading
-              ? isLoginMode
-                ? "Logging in..."
-                : step === "signup"
-                ? "Signing up..."
-                : "Verifying OTP..."
+              ? "Processing..."
+              : isSendingOtp
+              ? "Sending OTP..."
               : isLoginMode
               ? "LOGIN"
               : step === "signup"
@@ -339,12 +249,26 @@ export default function AuthPage() {
           </Button>
         </form>
 
-        <p className="auth-toggle">
-          {isLoginMode ? "Don't have an account?" : "Already have an account?"}
-          <button onClick={toggleForm}>
-            {isLoginMode ? "Sign Up" : "Login"}
-          </button>
-        </p>
+        <div className="auth-footer">
+          <p className="auth-toggle">
+            {isLoginMode
+              ? "Don't have an account?"
+              : "Already have an account?"}
+            <button onClick={toggleForm}>
+              {isLoginMode ? "Sign Up" : "Login"}
+            </button>
+          </p>
+          {step === "otp" && (
+            <button
+              type="button"
+              onClick={sendOtp}
+              disabled={isSendingOtp}
+              className="resend-otp-btn"
+            >
+              {isSendingOtp ? "Sending..." : "Resend Code"}
+            </button>
+          )}
+        </div>
       </Card>
     </>
   );

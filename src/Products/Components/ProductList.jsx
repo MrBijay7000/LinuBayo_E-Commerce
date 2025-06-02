@@ -1,9 +1,16 @@
 import Card from "../../shared/UIElements/Card";
 import ProductItem from "./ProductItem";
+
 import "./ProductList.css";
 
 export default function ProductList(props) {
-  if (props.items.length === 0) {
+  // Show nothing while loading
+  if (props.isLoading) {
+    return null;
+  }
+
+  // Show empty state only after loading completes with no items
+  if (!props.items || props.items.length === 0) {
     return (
       <div className="no-product-container">
         <Card className="no-product">

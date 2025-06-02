@@ -1,13 +1,15 @@
 import React from "react";
 import "./LoadingSpinner.css";
 
-const LoadingSpinner = (props) => {
+const LoadingSpinner = ({ asOverlay, barCount = 3, className = "" }) => {
   return (
-    <div className={`${props.asOverlay && "loading-spinner__overlay"}`}>
+    <div
+      className={`${asOverlay ? "loading-spinner__overlay" : ""} ${className}`}
+    >
       <div className="lds-bars">
-        <div></div>
-        <div></div>
-        <div></div>
+        {[...Array(barCount)].map((_, i) => (
+          <div key={i} />
+        ))}
       </div>
     </div>
   );

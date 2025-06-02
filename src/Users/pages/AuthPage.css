@@ -30,3 +30,56 @@
 .auth-toggle button:hover {
   color: #928cff;
 }
+
+.otp-container {
+  margin-bottom: 1.5rem;
+}
+
+.otp-hint {
+  font-size: 0.8rem;
+  color: #ffffff;
+  margin-top: 0.5rem;
+}
+
+.auth-footer {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.auth-toggle-btn {
+  background: none;
+  border: none;
+  color: #8e44ad;
+  cursor: pointer;
+  font-weight: bold;
+  margin-left: 0.5rem;
+  padding: 0;
+}
+
+.auth-toggle-btn:hover {
+  text-decoration: underline;
+}
+
+.auth-toggle-btn:disabled {
+  color: #ccc;
+  cursor: not-allowed;
+  text-decoration: none;
+}
+
+.resend-otp-btn {
+  background: none;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 0.8rem;
+  margin-top: 1rem;
+}
+
+.resend-otp-btn:hover {
+  text-decoration: underline;
+}
+
+.resend-otp-btn:disabled {
+  color: #ccc;
+  cursor: not-allowed;
+}
