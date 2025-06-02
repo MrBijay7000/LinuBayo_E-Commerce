@@ -43,6 +43,12 @@ export default function App() {
 
   return (
     <>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={2000}
+        hideProgressBar
+        theme="colored"
+      />
       <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
         <RouterProvider router={router} />
       </AuthContext.Provider>

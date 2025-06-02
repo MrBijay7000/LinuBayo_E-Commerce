@@ -3,6 +3,9 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const HttpError = require("../models/http-error");
 const User = require("../models/User");
+const nodemailer = require("nodemailer");
+
+const otpStore = new Map();
 
 const signup = async (req, res, next) => {
   const error = validationResult(req);
@@ -157,5 +160,76 @@ const login = async (req, res, next) => {
   });
 };
 
+const sendOtp = async (req, res, next) => {
+  const { email } = req.body;
+  const normalizedEmail = email.toLowerCase();
+
+  if (!email) return res.status(400).json({ message: "Email is required" });
+
+  // ✅ Check if user already exists
+  let existingUser;
+  try {
+    // existingUser = await User.findOne({ email });
+    existingUser = await User.findOne({ email: normalizedEmail });
+
+    if (existingUser) {
+      return res.status(409).json({ message: "User already exists" }); // 409 = Conflict
+    }
+  } catch (err) {
+    return res.status(500).json({ message: "Something went wrong" });
+  }
+
+  const otp = Math.floor(100000 + Math.random() * 900000).toString();
+  otpStore.set(email, otp);
+
+  const transporter = nodemailer.createTransport({
+    service: "Gmail",
+    auth: {
+      user: "mr.bijaystha42@gmail.com",
+      pass: "pqfygudcylmnntjg",
+    },
+  });
+
+  const mailOptions = {
+    from: "your_email@gmail.com",
+    to: email,
+    subject: "Your OTP for Email Verification",
+    text: `Your OTP is ${otp}. It is valid for 5 minutes.`,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    res.status(200).json({ message: "OTP sent" });
+
+    setTimeout(() => otpStore.delete(email), 5 * 60 * 1000);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to send OTP" });
+  }
+};
+
+const verifyOtp = async (req, res, next) => {
+  const { email, otp } = req.body;
+
+  if (!email || !otp) {
+    return res.status(400).json({ message: "Email and OTP are required" });
+  }
+
+  const storedOtp = otpStore.get(email);
+
+  if (!storedOtp) {
+    return res.status(400).json({ message: "OTP has expired or was not sent" });
+  }
+
+  if (storedOtp !== otp) {
+    return res.status(400).json({ message: "Invalid OTP" });
+  }
+
+  otpStore.delete(email);
+  return res.status(200).json({ message: "OTP verified" });
+};
+
 exports.signup = signup;
 exports.login = login;
+exports.sendOtp = sendOtp;
+exports.verifyOtp = verifyOtp;

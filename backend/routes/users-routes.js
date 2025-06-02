@@ -1,7 +1,6 @@
 const express = require("express");
 const { check } = require("express-validator");
 const usersControllers = require("../controllers/users-controllers");
-
 const router = express.Router();
 
 // router.get("/", userControllers.getUsers);
@@ -35,5 +34,7 @@ router.post(
 // );
 
 router.post("/login", usersControllers.login);
+router.post("/send-otp", usersControllers.sendOtp);
+router.post("/verify-otp", usersControllers.verifyOtp);
 
 module.exports = router;
