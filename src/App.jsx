@@ -14,6 +14,7 @@ import { useCallback, useState } from "react";
 import AdminUpdateProduct from "./Users/pages/AdminUpdateProduct";
 import { useAuth } from "./shared/hooks/auth-hook";
 import AdminHomePage from "./Users/pages/AdminHomePage";
+import AdminCategoryPage from "./Users/pages/AdminCategoryPage";
 
 const routes = [
   {
@@ -29,6 +30,7 @@ const routes = [
       { path: "/admin/addProduct", element: <AdminAddProduct /> },
       { path: "/admin/homepage", element: <AdminHomePage /> },
       { path: "/admin/updateProduct/:pid", element: <AdminUpdateProduct /> },
+      { path: "/admin/products/:category", element: <AdminCategoryPage /> },
     ],
   },
 ];

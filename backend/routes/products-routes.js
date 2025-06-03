@@ -53,4 +53,8 @@ router.get("/:category", productsControllers.getProductByCategory);
 
 router.get("/getProduct/:pid", productsControllers.getProductDetails);
 
+router.delete("/:pid", productsControllers.deleteProduct);
+
+router.get("/categories", productsControllers.getCategories);
+
 module.exports = router;

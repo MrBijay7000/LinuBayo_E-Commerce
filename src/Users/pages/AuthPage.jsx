@@ -14,8 +14,10 @@ import { AuthContext } from "../../shared/Context/auth-context";
 import LoadingSpinner from "../../shared/UIElements/LoadingSpinner";
 import ErrorModal from "../../shared/UIElements/ErrorModal";
 import { useHttpClient } from "../../shared/hooks/http-hook";
+import { useNavigate } from "react-router-dom";
 
 export default function AuthPage() {
+  const navigate = useNavigate();
   const auth = useContext(AuthContext);
   const [otp, setOtp] = useState("");
   const [step, setStep] = useState("signup");
@@ -86,6 +88,11 @@ export default function AuthPage() {
 
       auth.login(responseData.userId, responseData.token, responseData.role);
       toast.success("Login successful!");
+      if (responseData.role === "admin") {
+        navigate("/admin/homepage");
+      } else {
+        navigate("/user/homepage");
+      }
     } catch (err) {
       toast.error(err.message || "Authentication failed. Please try again.");
     }
@@ -155,6 +162,11 @@ export default function AuthPage() {
       );
       console.log(loginResponse);
       toast.success("Account created successfully! Welcome!");
+      if (loginResponse.role === "admin") {
+        navigate("/admin/homepage");
+      } else {
+        navigate("/user/homepage");
+      }
     } catch (err) {
       toast.error(err.message || "Signup failed. Please try again.");
     }

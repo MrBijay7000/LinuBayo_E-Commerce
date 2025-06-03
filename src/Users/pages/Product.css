@@ -116,3 +116,23 @@
   width: 90%;
   max-width: 40rem;
 }
+
+.form-control select {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font: inherit;
+  background-color: white;
+}
+
+.form-control select:focus {
+  outline: none;
+  border-color: #4f005f;
+  background-color: #f6dbfc;
+}
+
+.form-control.invalid select {
+  border-color: red;
+  background-color: #ffd7d7;
+}

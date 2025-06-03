@@ -35,6 +35,7 @@ export default function ProductList(props) {
           quantity={item.quantity}
           originalPrice={item.originalPrice}
           discount={item.discount}
+          onDeleteProduct={props.onDeleteProduct}
         />
       ))}
     </ul>

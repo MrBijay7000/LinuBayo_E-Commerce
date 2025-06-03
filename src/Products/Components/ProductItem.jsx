@@ -1,9 +1,10 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import Card from "../../shared/UIElements/Card";
-import "./ProductItem.css";
 import Modal from "../../shared/UIElements/Modal";
 import Button from "../../shared/FormElements/Button";
-import { useState } from "react";
+import "./ProductItem.css";
 
 export default function ProductItem(props) {
   const navigate = useNavigate();
@@ -17,8 +18,9 @@ export default function ProductItem(props) {
     setShowConfirmModal(false);
   }
 
-  function confirmDeleteWarningHandler() {
-    console.log("DEEE");
+  function confirmDeleteHandler() {
+    setShowConfirmModal(false);
+    props.onDeleteProduct(props.id); // Deletion is now handled by parent
   }
 
   function updateProductHandler() {
@@ -37,14 +39,15 @@ export default function ProductItem(props) {
             <Button inverse onClick={cancelDeleteHandler}>
               CANCEL
             </Button>
-            <Button danger onClick={confirmDeleteWarningHandler}>
+            <Button danger onClick={confirmDeleteHandler}>
               DELETE
             </Button>
           </>
         }
       >
         <p>
-          Do you want to proceed? Please not that it can't be undone thereafter.
+          Do you want to proceed? Please note that it can't be undone
+          thereafter.
         </p>
       </Modal>
       <li className="product-item">
@@ -85,7 +88,11 @@ export default function ProductItem(props) {
             <button className="btn-update" onClick={updateProductHandler}>
               UPDATE
             </button>
-            <button className="btn-delete" onClick={showDeleteWarningHandler}>
+            <button
+              className="btn-delete"
+              onClick={showDeleteWarningHandler}
+              disabled={props.isDeleting}
+            >
               DELETE
             </button>
           </div>

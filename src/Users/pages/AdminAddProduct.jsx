@@ -75,11 +75,22 @@ export default function AdminAddProduct() {
       );
 
       toast.success("Product added successfully!");
-      navigate("/admin");
+      //   navigate("/admin/homepage");
+      navigate(
+        `/admin/products/${formState.inputs.category.value.toLowerCase()}`
+      );
     } catch (err) {
       toast.error(err.message || "Failed to add product");
     }
   };
+
+  const categories = [
+    { value: "tops", label: "Tops" },
+    { value: "pants", label: "Pants" },
+    { value: "jackets", label: "Jackets" },
+    { value: "accessories", label: "Accessories" },
+    // Add more categories as needed
+  ];
 
   return (
     <>
@@ -113,7 +124,7 @@ export default function AdminAddProduct() {
           errorText="Please enter a valid original price"
           onInput={inputHandler}
         />
-        <Input
+        {/* <Input
           id="category"
           element="input"
           type="text"
@@ -121,7 +132,30 @@ export default function AdminAddProduct() {
           validators={[VALIDATOR_REQUIRE()]}
           errorText="Please enter a valid category"
           onInput={inputHandler}
-        />
+        /> */}
+        <div className="form-control">
+          <label htmlFor="category">Category</label>
+          <select
+            id="category"
+            onChange={(e) =>
+              inputHandler("category", e.target.value, !!e.target.value)
+            }
+            value={formState.inputs.category.value}
+          >
+            <option value="">-- Select Category --</option>
+            {categories.map((cat) => (
+              <option key={cat.value} value={cat.value}>
+                {cat.label}
+              </option>
+            ))}
+          </select>
+          {!formState.inputs.category.isValid && (
+            <p className="form-control__error-text">
+              Please select a category.
+            </p>
+          )}
+        </div>
+
         <Input
           id="description"
           element="textarea"

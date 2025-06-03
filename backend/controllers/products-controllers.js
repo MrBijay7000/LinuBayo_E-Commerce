@@ -146,6 +146,71 @@ const getProductDetails = async (req, res, next) => {
   }
 };
 
+const deleteProduct = async (req, res, next) => {
+  const productId = req.params.pid;
+
+  // Validate product ID format
+  //   if (!mongoose.Types.ObjectId.isValid(productId)) {
+  //     return res.status(400).json({
+  //       message: "Invalid product ID format",
+  //     });
+  //   }
+
+  try {
+    // Find the product first to get the image path
+    const product = await Product.findById(productId);
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    const imagePath = product.image;
+
+    // Delete the product
+    const deletedProduct = await Product.findByIdAndDelete(productId);
+
+    if (!deletedProduct) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    // Delete associated image file if it exists
+    if (imagePath) {
+      fs.unlink(imagePath, (err) => {
+        if (err) {
+          console.error("Failed to delete product image:", err);
+          // Continue even if image deletion fails
+        }
+      });
+    }
+
+    res.status(200).json({
+      message: "Product deleted successfully",
+      deletedProduct: {
+        id: productId,
+        name: deletedProduct.name,
+      },
+    });
+  } catch (err) {
+    console.error("Error deleting product:", err);
+    res.status(500).json({
+      message: "Failed to delete product",
+      error: err.message,
+    });
+  }
+};
+
+// In your products controller
+const getCategories = async (req, res, next) => {
+  try {
+    const categories = await Product.distinct("category");
+    res.status(200).json({ categories });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getCategories = getCategories;
+exports.deleteProduct = deleteProduct;
 exports.addProduct = addProduct;
 exports.updateProduct = updateProduct;
 exports.getProductByCategory = getProductByCategory;
