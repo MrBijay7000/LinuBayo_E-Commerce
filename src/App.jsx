@@ -10,11 +10,14 @@ import PantsPage from "./Products/Pages/PantsPage";
 import AdminAddProduct from "./Users/pages/AdminAddProduct";
 import AuthPage from "./Users/pages/AuthPage";
 import { AuthContext } from "./shared/Context/auth-context";
-import { useCallback, useState } from "react";
 import AdminUpdateProduct from "./Users/pages/AdminUpdateProduct";
 import { useAuth } from "./shared/hooks/auth-hook";
 import AdminHomePage from "./Users/pages/AdminHomePage";
 import AdminCategoryPage from "./Users/pages/AdminCategoryPage";
+import UsersHomePage from "./Users/pages/UsersHomePage";
+import { CartContextProvider } from "./shared/Context/CartContext";
+import UsersCartPage from "./Users/pages/UsersCartPage";
+import UsersCheckoutPage from "./Users/pages/UsersCheckoutPage";
 
 const routes = [
   {
@@ -27,6 +30,9 @@ const routes = [
       { path: "/pants", element: <PantsPage /> },
       { path: "/aboutus", element: <AboutUs /> },
       { path: "/auth", element: <AuthPage /> },
+      { path: "/cart", element: <UsersCartPage /> },
+      { path: "/checkout", element: <UsersCheckoutPage /> },
+      { path: "/users/home", element: <UsersHomePage /> },
       { path: "/admin/addProduct", element: <AdminAddProduct /> },
       { path: "/admin/homepage", element: <AdminHomePage /> },
       { path: "/admin/updateProduct/:pid", element: <AdminUpdateProduct /> },
@@ -60,11 +66,13 @@ export default function App() {
         hideProgressBar
         theme="colored"
       />
-      <AuthContext.Provider
-        value={{ isLoggedIn: !!token, userId, login, logout, role }}
-      >
-        <RouterProvider router={router} />
-      </AuthContext.Provider>
+      <CartContextProvider>
+        <AuthContext.Provider
+          value={{ isLoggedIn: !!token, userId, login, logout, role }}
+        >
+          <RouterProvider router={router} />
+        </AuthContext.Provider>
+      </CartContextProvider>
     </>
   );
 }

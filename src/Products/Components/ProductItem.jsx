@@ -1,12 +1,16 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Card from "../../shared/UIElements/Card";
 import Modal from "../../shared/UIElements/Modal";
 import Button from "../../shared/FormElements/Button";
 import "./ProductItem.css";
+import { AuthContext } from "../../shared/Context/auth-context";
+import CartContext from "../../shared/Context/CartContext";
 
 export default function ProductItem(props) {
+  const auth = useContext(AuthContext);
+  const cartCtx = useContext(CartContext);
   const navigate = useNavigate();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
@@ -25,6 +29,18 @@ export default function ProductItem(props) {
 
   function updateProductHandler() {
     navigate(`/admin/updateProduct/${props.id}`);
+  }
+
+  function addItemToCartHandler() {
+    const selectedItem = {
+      id: props.id,
+      name: props.name,
+      image: props.image,
+      price: props.price,
+      quantity: 1,
+    };
+
+    cartCtx.addItem(selectedItem);
   }
 
   return (
@@ -88,13 +104,19 @@ export default function ProductItem(props) {
             <button className="btn-update" onClick={updateProductHandler}>
               UPDATE
             </button>
-            <button
-              className="btn-delete"
-              onClick={showDeleteWarningHandler}
-              disabled={props.isDeleting}
-            >
-              DELETE
-            </button>
+            {auth.role === "admin" ? (
+              <button
+                className="btn-delete"
+                onClick={showDeleteWarningHandler}
+                disabled={props.isDeleting}
+              >
+                DELETE
+              </button>
+            ) : (
+              <button className="btn-addtocart" onClick={addItemToCartHandler}>
+                ADD TO CART
+              </button>
+            )}
           </div>
         </Card>
       </li>

@@ -357,3 +357,112 @@ td {
     padding: 1rem;
   }
 }
+/* Extra Small Devices (Portrait phones, < 480px) */
+@media (max-width: 480px) {
+  .admin-dashboard {
+    flex-direction: column;
+  }
+
+  .admin-sidebar {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0.8rem 0;
+  }
+
+  .sidebar-header {
+    display: none;
+  }
+
+  .sidebar-nav {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    scrollbar-width: thin;
+    scrollbar-color: #ccc transparent;
+  }
+
+  .sidebar-nav::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .sidebar-nav::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 4px;
+  }
+
+  .sidebar-nav a {
+    min-width: 50px;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .sidebar-nav a span {
+    display: none;
+  }
+
+  .sidebar-nav a svg {
+    font-size: 1.2rem;
+  }
+
+  .admin-header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1rem;
+  }
+
+  .header-actions {
+    width: 100%;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .dashboard-content h1 {
+    font-size: 1.5rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .charts-row,
+  .tables-row {
+    grid-template-columns: 1fr;
+  }
+
+  .table-container h3,
+  .chart-container h3 {
+    font-size: 1rem;
+  }
+
+  th,
+  td {
+    font-size: 0.8rem;
+    padding: 0.6rem;
+  }
+
+  .stat-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .stat-icon {
+    margin: 0 0 1rem 0;
+  }
+
+  .dashboard-content {
+    padding: 1rem 0.5rem;
+  }
+
+  .user-profile span {
+    font-size: 0.9rem;
+  }
+
+  .status-badge {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.4rem;
+  }
+}

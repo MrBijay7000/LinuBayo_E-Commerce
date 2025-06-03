@@ -1,0 +1,197 @@
+.checkout-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.empty-cart {
+  text-align: center;
+  padding: 2rem;
+  /* background: #f8f9fa; */
+  background: linear-gradient(135deg, #0d1823, #234566);
+
+  border-radius: 8px;
+}
+
+.order-success {
+  text-align: center;
+  padding: 2rem;
+  /* background: #f8f9fa; */
+  background: linear-gradient(135deg, #0d1823, #234566);
+  /* margin-top: 20px; */
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.order-success h2 {
+  color: #28a745;
+  margin-bottom: 1rem;
+}
+
+.checkout-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.checkout-form {
+  /* background: black; */
+  background: linear-gradient(135deg, #0d1823, #234566);
+
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.form-group textarea {
+  min-height: 100px;
+}
+
+.payment-methods {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.payment-methods label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+/* Add these styles to your UsersCheckoutPage.css */
+
+.payment-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.payment-option {
+  position: relative;
+}
+
+.payment-option input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+}
+
+.payment-option label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.payment-option label:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.payment-option input[type="radio"]:checked + label {
+  background: rgba(41, 98, 255, 0.2);
+  border-color: #2962ff;
+}
+
+.payment-icon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  color: #2962ff;
+}
+
+.payment-option input[type="radio"]:checked + label .payment-icon {
+  color: #fff;
+}
+
+.payment-option span {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* Add Font Awesome for icons (in your index.html or main JS file) */
+/* <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" /> */
+
+.order-summary {
+  /* background: #f8f9fa; */
+  background: linear-gradient(135deg, #0d1823, #234566);
+
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+.order-items {
+  margin: 1rem 0;
+}
+
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.item-info {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.order-totals {
+  margin-top: 1rem;
+}
+
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.grand-total {
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #ddd;
+}
+
+@media (min-width: 768px) {
+  .checkout-content {
+    flex-direction: row;
+  }
+
+  .checkout-form {
+    flex: 2;
+  }
+
+  .order-summary {
+    flex: 1;
+    position: sticky;
+    top: 1rem;
+    align-self: flex-start;
+  }
+}

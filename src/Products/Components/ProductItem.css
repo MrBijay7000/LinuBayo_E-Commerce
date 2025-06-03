@@ -194,6 +194,15 @@
   color: #fff;
 }
 
+.btn-addtocart {
+  background: red;
+  color: #a5bdff;
+}
+
+.btn-addtocart:hover {
+  background: #ffffff;
+}
+
 /* Responsive tweak for larger screens */
 @media (min-width: 768px) {
   .product-list {

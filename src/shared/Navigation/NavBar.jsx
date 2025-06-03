@@ -1,13 +1,22 @@
 import React, { useContext, useState } from "react";
-import { FaSearch, FaUser, FaShoppingBag, FaBars } from "react-icons/fa";
+import {
+  FaSearch,
+  FaUser,
+  FaShoppingBag,
+  FaBars,
+  FaSignInAlt,
+  FaSignOutAlt,
+} from "react-icons/fa";
 import { NavLink, useNavigate } from "react-router-dom";
 
 import "./NavBar.css";
 import MobileNav from "./MobileNav";
 import { AuthContext } from "../Context/auth-context";
+import CartContext from "../Context/CartContext";
 
 export default function Navbar() {
   const auth = useContext(AuthContext);
+  const cartCtx = useContext(CartContext);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [query, setQuery] = useState("");
   const navigate = useNavigate();
@@ -16,12 +25,21 @@ export default function Navbar() {
     setDrawerOpen(!drawerOpen);
   };
 
+  const totalCartItems = cartCtx.items.reduce(
+    (total, item) => total + item.quantity,
+    0
+  );
+
   const handleSearch = (e) => {
     e.preventDefault();
     if (query.trim()) {
       navigate(`/search?query=${encodeURIComponent(query.trim())}`);
     }
   };
+
+  function handleLogOut() {
+    auth.logout();
+  }
 
   return (
     <nav className="navbar">
@@ -34,7 +52,7 @@ export default function Navbar() {
           >
             <FaBars />
           </button>
-          <NavLink to="/" className="logo">
+          <NavLink to="/" className="logo-link">
             LINUBAYO
           </NavLink>
         </div>
@@ -57,11 +75,30 @@ export default function Navbar() {
 
         {/* Icons (desktop only, hidden on mobile via CSS) */}
         <div className="nav-icons">
-          <NavLink to="/auth">
+          {!auth.isLoggedIn ? (
+            <NavLink to="/auth" className="nav-auth-btn login">
+              <FaSignInAlt className="icon" />
+              <span>Login</span>
+            </NavLink>
+          ) : (
+            <NavLink
+              to="/"
+              className="nav-auth-btn logout"
+              onClick={handleLogOut}
+            >
+              <FaSignOutAlt className="icon" />
+              <span>Logout</span>
+            </NavLink>
+          )}
+          <NavLink to="/auth" className="nav-icon">
             <FaUser />
           </NavLink>
-          <NavLink to="/">
+
+          <NavLink to="/cart" className="cart-icon">
             <FaShoppingBag />
+            {totalCartItems > 0 && (
+              <span className="cart-badge">{totalCartItems}</span>
+            )}
           </NavLink>
         </div>
       </div>

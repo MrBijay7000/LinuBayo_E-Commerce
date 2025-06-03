@@ -1,10 +1,10 @@
 /* ====== Base Navbar Styles ====== */
-body {
+/* body {
   background: linear-gradient(135deg, #2c3e50, #4d4d4d);
   margin: 0;
   font-family: "Raleway", sans-serif;
   color: #fff;
-}
+} */
 
 .navbar {
   /* background: #ffffff; */
@@ -32,19 +32,18 @@ body {
 }
 
 /* ====== Logo ====== */
-.logo {
-  font-size: 20px;
-  font-weight: 700;
+.logo-link {
+  font-size: 24px;
+  font-weight: bold;
   color: whitesmoke;
-  /* color: #111; */
   text-decoration: none;
   letter-spacing: 1px;
+  transition: color 0.2s ease-in-out;
 }
 
-.logo:hover {
-  color: #444;
+.logo-link:hover {
+  color: #ccc;
 }
-
 /* ====== Search Bar ====== */
 .search-container {
   display: flex;
@@ -95,18 +94,28 @@ body {
   gap: 20px;
 }
 
-.nav-icons a {
-  /* color: #333; */
-  color: wheat;
+.nav-icon {
   font-size: 18px;
   text-decoration: none;
   display: flex;
   align-items: center;
   transition: color 0.2s;
+  color: white;
 }
 
-.nav-icons a:hover {
-  color: #000;
+.nav-icon:hover {
+  color: black;
+}
+
+/* If you're targeting SVGs inside */
+.nav-icon svg {
+  color: white;
+  transition: color 0.2s;
+}
+
+.nav-icon:hover svg {
+  color: black;
+  cursor: pointer;
 }
 
 .cart-icon {
@@ -290,9 +299,89 @@ body {
     display: flex !important;
     margin-left: auto;
     gap: 12px;
+    color: white;
   }
 
   .nav-icons a svg {
     font-size: 20px;
   }
+}
+
+/* LoginLogout.css */
+
+.nav-auth-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.2s ease-in-out;
+  border: 1px solid;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* Make sure the icon doesn't shrink and text doesn't wrap */
+.nav-auth-btn .icon {
+  font-size: 1.125rem;
+  flex-shrink: 0;
+}
+
+/* LOGIN styles */
+.nav-auth-btn.login {
+  color: #2563eb;
+  border-color: #2563eb;
+}
+
+.nav-auth-btn.login:hover {
+  background-color: #2563eb;
+  color: #ffffff;
+}
+
+/* LOGOUT styles */
+.nav-auth-btn.logout {
+  color: #dc2626;
+  border-color: #dc2626;
+}
+
+.nav-auth-btn.logout:hover {
+  background-color: #dc2626;
+  color: #ffffff;
+}
+
+/* MOBILE STYLES */
+@media (max-width: 640px) {
+  .nav-auth-btn {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.75rem; /* smaller text */
+    gap: 0.4rem;
+  }
+
+  .nav-auth-btn .icon {
+    font-size: 1rem;
+  }
+
+  .nav-auth-btn span {
+    display: none; /* Optional: hide text on very small screens */
+  }
+}
+
+.cart-icon {
+  position: relative;
+  display: inline-block;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  background-color: crimson;
+  color: white;
+  font-size: 0.75rem;
+  padding: 2px 6px;
+  border-radius: 50%;
 }
