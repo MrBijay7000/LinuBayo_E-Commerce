@@ -7,6 +7,7 @@ const bodyParser = require("body-parser");
 const HttpError = require("./models/http-error");
 const usersRoutes = require("./routes/users-routes");
 const productRoutes = require("./routes/products-routes");
+const orderRoutes = require("./routes/order-routes");
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.use((req, res, next) => {
 
 app.use("/api/users", usersRoutes);
 app.use("/api/products", productRoutes);
+app.use("/api/orders", orderRoutes);
 
 app.use((req, res, next) => {
   const error = new HttpError("Could not find this route.", 404);

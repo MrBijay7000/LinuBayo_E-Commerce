@@ -1,4 +1,4 @@
-import { createContext, useReducer, useState } from "react";
+import { createContext, useReducer, useState, useEffect } from "react";
 
 const CartContext = createContext({
   items: [],
@@ -67,15 +67,57 @@ function cartReducer(state, action) {
     };
   }
 
+  if (action.type === "SET_CART") {
+    return {
+      items: action.cart.items || [],
+      totalAmount: action.cart.totalAmount || 0,
+    };
+  }
+
   return state;
 }
 
 export function CartContextProvider({ children }) {
   const [orderDetails, setOrderDetails] = useState(null);
+  const [isCartLoaded, setIsCartLoaded] = useState(false);
   const [cart, dispatchCartAction] = useReducer(cartReducer, {
     items: [],
     totalAmount: 0,
   });
+
+  // Load cart from localStorage on initial render
+  useEffect(() => {
+    const savedCart = localStorage.getItem("cart");
+    if (savedCart) {
+      try {
+        const parsedCart = JSON.parse(savedCart);
+        if (parsedCart.items && Array.isArray(parsedCart.items)) {
+          dispatchCartAction({
+            type: "SET_CART",
+            cart: parsedCart,
+          });
+        }
+      } catch (err) {
+        console.error("Failed to parse cart data", err);
+        localStorage.removeItem("cart");
+      }
+    }
+    setIsCartLoaded(true); // Mark cart as loaded
+  }, []);
+
+  // Save cart to localStorage whenever it changes
+  useEffect(() => {
+    if (isCartLoaded) {
+      // Only save after initial load
+      localStorage.setItem(
+        "cart",
+        JSON.stringify({
+          items: cart.items,
+          totalAmount: cart.totalAmount,
+        })
+      );
+    }
+  }, [cart, isCartLoaded]);
 
   function addItem(item) {
     dispatchCartAction({
@@ -95,6 +137,7 @@ export function CartContextProvider({ children }) {
     dispatchCartAction({
       type: "CLEAR_CART",
     });
+    localStorage.removeItem("cart"); // Clear from localStorage when cart is emptied
   }
 
   const cartContext = {

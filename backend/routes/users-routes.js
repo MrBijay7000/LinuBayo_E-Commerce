@@ -2,6 +2,7 @@ const express = require("express");
 const { check } = require("express-validator");
 const usersControllers = require("../controllers/users-controllers");
 const router = express.Router();
+const auth = require("../middleware/auth");
 
 // router.get("/", userControllers.getUsers);
 
@@ -36,5 +37,6 @@ router.post(
 router.post("/login", usersControllers.login);
 router.post("/send-otp", usersControllers.sendOtp);
 router.post("/verify-otp", usersControllers.verifyOtp);
+router.get("/me", auth, usersControllers.getDetails);
 
 module.exports = router;

@@ -20,6 +20,8 @@ import UsersCartPage from "./Users/pages/UsersCartPage";
 import UsersCheckoutPage from "./Users/pages/UsersCheckoutPage";
 import UsersPaymentPage from "./Users/pages/UsersPaymentPage";
 import OrderSuccessPage from "./Users/pages/OrderSuccessPage";
+import OrderDetailsPage from "./Users/pages/OrderDetailsPage";
+import OrdersListPage from "./Users/pages/OrdersListPage";
 
 const routes = [
   {
@@ -36,6 +38,8 @@ const routes = [
       { path: "/checkout", element: <UsersCheckoutPage /> },
       { path: "/payment", element: <UsersPaymentPage /> },
       { path: "/order-success", element: <OrderSuccessPage /> },
+      { path: "/orders", element: <OrdersListPage /> },
+      { path: "/orders/:orderId", element: <OrderDetailsPage /> },
       { path: "/users/home", element: <UsersHomePage /> },
       { path: "/admin/addProduct", element: <AdminAddProduct /> },
       { path: "/admin/homepage", element: <AdminHomePage /> },
@@ -70,13 +74,13 @@ export default function App() {
         hideProgressBar
         theme="colored"
       />
-      <CartContextProvider>
-        <AuthContext.Provider
-          value={{ isLoggedIn: !!token, userId, login, logout, role }}
-        >
+      <AuthContext.Provider
+        value={{ isLoggedIn: !!token, token, userId, login, logout, role }}
+      >
+        <CartContextProvider>
           <RouterProvider router={router} />
-        </AuthContext.Provider>
-      </CartContextProvider>
+        </CartContextProvider>
+      </AuthContext.Provider>
     </>
   );
 }

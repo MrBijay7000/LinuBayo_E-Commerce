@@ -12,8 +12,10 @@ import {
 import { toast } from "react-toastify";
 import "./UsersPaymentPage.css";
 import { useForm } from "../../shared/hooks/form-hook";
+import { AuthContext } from "../../shared/Context/auth-context";
 
 function UsersPaymentPage() {
+  const { isLoggedIn, token, userId, logout } = useContext(AuthContext);
   const cartCtx = useContext(CartContext);
   const navigate = useNavigate();
   const [isProcessing, setIsProcessing] = useState(false);
@@ -51,46 +53,49 @@ function UsersPaymentPage() {
   );
 
   useEffect(() => {
+    if (!isLoggedIn) {
+      toast.error("Please login to complete your payment");
+      navigate("/auth");
+      return;
+    }
     if (!cartCtx.orderDetails) {
       navigate("/checkout");
     }
-  }, [cartCtx.orderDetails, navigate]);
+  }, [isLoggedIn, cartCtx.orderDetails, navigate]);
 
   const handlePayment = async (e) => {
     e.preventDefault();
+
+    if (!isLoggedIn) {
+      toast.error("Please login to complete your payment");
+      navigate("/auth");
+      return;
+    }
+
     setIsProcessing(true);
 
     try {
-      // Prepare order data for database
       const orderData = {
         ...cartCtx.orderDetails,
+        user: userId, // Add user ID from auth context
+        totalAmount: cartCtx.totalAmount,
         paymentStatus: "completed",
-        paymentDetails:
-          cartCtx.orderDetails.paymentMethod === "credit-card"
-            ? {
-                last4: formState.inputs.cardNumber.value.slice(-4),
-                cardType: "visa", // You would determine this from the card number
-              }
-            : {
-                email: formState.inputs.khaltinumber.value,
-              },
-        orderDate: new Date().toISOString(),
+        // ... rest of your order data
       };
 
-      // Send to backend API
-      //   const response = await fetch("http://localhost:5000/api/orders", {
-      //     method: "POST",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //     body: JSON.stringify(orderData),
-      //   });
+      const response = await fetch("http://localhost:5001/api/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(orderData),
+      });
 
-      //   if (!response.ok) {
-      //     throw new Error("Failed to place order");
-      //   }
-
-      //   const data = await response.json();
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to place order");
+      }
 
       setPaymentSuccess(true);
       toast.success("Payment successful! Order placed.");
@@ -98,12 +103,17 @@ function UsersPaymentPage() {
       setTimeout(() => {
         cartCtx.clearCart();
         navigate("/order-success");
-        // navigate(`/order-success/${data.order._id}`);
+        cartCtx.clearCart();
       }, 1500);
     } catch (err) {
       console.error("Payment failed:", err);
-      toast.error("Payment failed. Please try again.");
+      toast.error(err.message || "Payment failed. Please try again.");
       setIsProcessing(false);
+
+      if (err.message.includes("401") || err.message.includes("unauthorized")) {
+        logout();
+        navigate("/auth");
+      }
     }
   };
 

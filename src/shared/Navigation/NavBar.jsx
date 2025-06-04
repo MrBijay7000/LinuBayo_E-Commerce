@@ -39,6 +39,7 @@ export default function Navbar() {
 
   function handleLogOut() {
     auth.logout();
+    cartCtx.clearCart();
   }
 
   return (

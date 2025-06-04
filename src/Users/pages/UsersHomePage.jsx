@@ -52,36 +52,13 @@ export default function UsersHomePage() {
           <Link to="/shop" className="cta-button">
             Shop Now <BsArrowRight />
           </Link>
+          <Link to="/order-success" className="cta-button">
+            Shop Now <BsArrowRight />
+          </Link>
         </div>
       </section>
 
       {/* Navigation Bar */}
-      <nav className="main-nav">
-        <div className="nav-container">
-          <Link to="/" className="logo">
-            FashionHub
-          </Link>
-
-          <div className="search-bar">
-            <input type="text" placeholder="Search for products..." />
-            <button>
-              <FiSearch />
-            </button>
-          </div>
-
-          <div className="nav-icons">
-            <Link to="/wishlist">
-              <FiHeart />
-            </Link>
-            <Link to="/cart">
-              <FiShoppingCart />
-            </Link>
-            <Link to="/account">
-              <FiUser />
-            </Link>
-          </div>
-        </div>
-      </nav>
 
       {/* Featured Categories */}
       <section className="featured-categories">
