@@ -91,7 +91,7 @@ export default function AuthPage() {
       if (responseData.role === "admin") {
         navigate("/admin/homepage");
       } else {
-        navigate("/users/home");
+        navigate("/");
       }
     } catch (err) {
       toast.error(err.message || "Authentication failed. Please try again.");
@@ -165,7 +165,7 @@ export default function AuthPage() {
       if (loginResponse.role === "admin") {
         navigate("/admin/homepage");
       } else {
-        navigate("/users/home");
+        navigate("/");
       }
     } catch (err) {
       toast.error(err.message || "Signup failed. Please try again.");

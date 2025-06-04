@@ -145,6 +145,10 @@
   border-radius: 8px;
 }
 
+.order-summary h2 {
+  color: whitesmoke;
+}
+
 .order-items {
   margin: 1rem 0;
 }

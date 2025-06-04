@@ -18,6 +18,8 @@ import UsersHomePage from "./Users/pages/UsersHomePage";
 import { CartContextProvider } from "./shared/Context/CartContext";
 import UsersCartPage from "./Users/pages/UsersCartPage";
 import UsersCheckoutPage from "./Users/pages/UsersCheckoutPage";
+import UsersPaymentPage from "./Users/pages/UsersPaymentPage";
+import OrderSuccessPage from "./Users/pages/OrderSuccessPage";
 
 const routes = [
   {
@@ -32,6 +34,8 @@ const routes = [
       { path: "/auth", element: <AuthPage /> },
       { path: "/cart", element: <UsersCartPage /> },
       { path: "/checkout", element: <UsersCheckoutPage /> },
+      { path: "/payment", element: <UsersPaymentPage /> },
+      { path: "/order-success", element: <OrderSuccessPage /> },
       { path: "/users/home", element: <UsersHomePage /> },
       { path: "/admin/addProduct", element: <AdminAddProduct /> },
       { path: "/admin/homepage", element: <AdminHomePage /> },

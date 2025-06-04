@@ -90,9 +90,27 @@ export default function Navbar() {
               <span>Logout</span>
             </NavLink>
           )}
-          <NavLink to="/auth" className="nav-icon">
-            <FaUser />
-          </NavLink>
+          {/* {auth.isLoggedIn && auth.role === "admin" ? (
+            <NavLink to="/admin/homepage" className="nav-icon">
+              <FaUser />
+            </NavLink>
+          ) : (
+            <NavLink to="/users/home" className="nav-icon">
+              <FaUser />
+            </NavLink>
+          )} */}
+          {auth.isLoggedIn && (
+            <NavLink
+              to={
+                auth.role?.toLowerCase() === "admin"
+                  ? "/admin/homepage"
+                  : "/users/home"
+              }
+              className="nav-icon"
+            >
+              <FaUser />
+            </NavLink>
+          )}
 
           <NavLink to="/cart" className="cart-icon">
             <FaShoppingBag />

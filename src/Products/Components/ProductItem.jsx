@@ -7,6 +7,7 @@ import Button from "../../shared/FormElements/Button";
 import "./ProductItem.css";
 import { AuthContext } from "../../shared/Context/auth-context";
 import CartContext from "../../shared/Context/CartContext";
+import { toast } from "react-toastify";
 
 export default function ProductItem(props) {
   const auth = useContext(AuthContext);
@@ -41,6 +42,14 @@ export default function ProductItem(props) {
     };
 
     cartCtx.addItem(selectedItem);
+    toast.success(`${props.name} added to cart!`, {
+      style: {
+        backgroundColor: "#0d1823",
+        color: "#fff",
+        fontWeight: "bold",
+        borderRadius: "10px",
+      },
+    });
   }
 
   return (

@@ -17,7 +17,8 @@
 .empty-cart p {
   font-size: 1.2rem;
   margin-bottom: 1.5rem;
-  color: #555;
+  /* color: #555; */
+  color: wheat;
 }
 
 .empty-cart .btn {
@@ -29,7 +30,8 @@
 }
 
 h1 {
-  color: #2c3e50;
+  /* color: #2c3e50; */
+  color: wheat;
   margin-bottom: 2rem;
   font-weight: 600;
   font-size: 2rem;
@@ -52,9 +54,11 @@ h1 {
   display: flex;
   gap: 1.5rem;
   padding: 1.5rem;
-  border: 1px solid #e0e0e0;
+  border: 100px solid linear-gradient(135deg, #0d1823, #234566);
   border-radius: 12px;
-  background: white;
+  /* background: white; */
+  background: linear-gradient(135deg, #0d1823, #234566);
+
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
   transition: transform 0.2s, box-shadow 0.2s;
 }
@@ -92,14 +96,28 @@ h1 {
 
 .cart-item-details h3 {
   margin: 0;
-  color: #2c3e50;
+  /* color: #2c3e50; */
+  color: whitesmoke;
   font-size: 1.1rem;
   font-weight: 600;
 }
 
 .cart-item-details p {
   margin: 0.3rem 0;
-  color: #555;
+  /* color: #555; */
+  color: whitesmoke;
+}
+
+/* Price styling */
+.price-highlight {
+  color: #e53935;
+  font-weight: 800;
+}
+
+.subtotal-highlight {
+  /* color: #2c3e50; */
+  font-weight: 600;
+  color: whitesmoke;
 }
 
 .cart-item-actions {
@@ -247,15 +265,4 @@ h1 {
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-/* Price styling */
-.price-highlight {
-  color: #e53935;
-  font-weight: 600;
-}
-
-.subtotal-highlight {
-  color: #2c3e50;
-  font-weight: 600;
 }

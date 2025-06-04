@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import Button from "../../shared/FormElements/Button";
 import { useForm } from "../../shared/hooks/form-hook";
 import Input from "../../shared/FormElements/Input";
-
 import "./UsersCheckoutPage.css";
 import {
   VALIDATOR_EMAIL,
@@ -17,7 +16,6 @@ function UsersCheckoutPage() {
   const cartCtx = useContext(CartContext);
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [orderSuccess, setOrderSuccess] = useState(false);
 
   const [formState, inputHandler] = useForm(
     {
@@ -56,36 +54,17 @@ function UsersCheckoutPage() {
     };
 
     try {
-      // In a real app, you would send this to your backend
-      // const response = await fetch('http://your-backend-api.com/orders', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(orderData)
-      // });
-      // const data = await response.json();
+      // Save order data to context or localStorage before redirecting
+      cartCtx.setOrderDetails(orderData);
 
-      console.log("Order submitted:", orderData);
-      setIsSubmitting(false);
-      setOrderSuccess(true);
-      toast.success("Order placed successfully!");
-
-      cartCtx.clearCart();
+      // Redirect to payment page
+      navigate("/payment");
     } catch (err) {
-      console.error("Order submission failed:", err);
+      console.error("Error preparing payment:", err);
+      toast.error("Failed to proceed to payment");
       setIsSubmitting(false);
-      toast.error("Failed to placed order right now!");
     }
   };
-
-  if (orderSuccess) {
-    return (
-      <div className="order-success">
-        <h2>Order Placed Successfully!</h2>
-        <p>Thank you for your purchase. Your order has been received.</p>
-        <Button onClick={() => navigate("/products")}>Continue Shopping</Button>
-      </div>
-    );
-  }
 
   if (cartCtx.items.length === 0) {
     return (
@@ -132,6 +111,37 @@ function UsersCheckoutPage() {
             onInput={inputHandler}
           />
 
+          <div className="order-summary">
+            <h2>Order Summary</h2>
+            <div className="order-items">
+              {cartCtx.items.map((item) => (
+                <div key={item.id} className="order-item">
+                  <div className="item-info">
+                    <span className="item-name">{item.name}</span>
+                    <span className="item-quantity">x {item.quantity}</span>
+                  </div>
+                  <span className="item-price">
+                    Rs {item.price * item.quantity}
+                  </span>
+                </div>
+              ))}
+            </div>
+            <div className="order-totals">
+              <div className="total-row">
+                <span>Subtotal</span>
+                <span>Rs {cartCtx.totalAmount}</span>
+              </div>
+              <div className="total-row">
+                <span>Shipping</span>
+                <span>Rs 100</span>
+              </div>
+              <div className="total-row grand-total">
+                <span>Total</span>
+                <span>Rs {cartCtx.totalAmount + 100}</span>
+              </div>
+            </div>
+          </div>
+
           <h2>Payment Method</h2>
           <div className="payment-options">
             <div className="payment-option">
@@ -156,17 +166,17 @@ function UsersCheckoutPage() {
             <div className="payment-option">
               <input
                 type="radio"
-                id="paypal"
+                id="khalti"
                 name="paymentMethod"
-                value="paypal"
-                checked={formState.inputs.paymentMethod.value === "paypal"}
-                onChange={() => inputHandler("paymentMethod", "paypal", true)}
+                value="khalti"
+                checked={formState.inputs.paymentMethod.value === "khalti"}
+                onChange={() => inputHandler("paymentMethod", "khalti", true)}
               />
-              <label htmlFor="paypal">
+              <label htmlFor="khalti">
                 <div className="payment-icon">
                   <i className="fab fa-paypal"></i>
                 </div>
-                <span>PayPal</span>
+                <span>Khalti</span>
               </label>
             </div>
 
@@ -193,40 +203,9 @@ function UsersCheckoutPage() {
           </div>
 
           <Button type="submit" disabled={!formState.isValid || isSubmitting}>
-            {isSubmitting ? "Processing..." : "Place Order"}
+            {isSubmitting ? "Processing..." : "Proceed to Pay"}
           </Button>
         </form>
-
-        <div className="order-summary">
-          <h2>Order Summary</h2>
-          <div className="order-items">
-            {cartCtx.items.map((item) => (
-              <div key={item.id} className="order-item">
-                <div className="item-info">
-                  <span className="item-name">{item.name}</span>
-                  <span className="item-quantity">x {item.quantity}</span>
-                </div>
-                <span className="item-price">
-                  Rs {item.price * item.quantity}
-                </span>
-              </div>
-            ))}
-          </div>
-          <div className="order-totals">
-            <div className="total-row">
-              <span>Subtotal</span>
-              <span>Rs {cartCtx.totalAmount}</span>
-            </div>
-            <div className="total-row">
-              <span>Shipping</span>
-              <span>Rs 100</span>
-            </div>
-            <div className="total-row grand-total">
-              <span>Total</span>
-              <span>Rs {cartCtx.totalAmount + 100}</span>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );

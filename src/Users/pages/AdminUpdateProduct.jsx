@@ -110,7 +110,7 @@ export default function AdminUpdateProduct() {
         }
       );
 
-      navigate("/admin");
+      navigate("/admin/homepage");
     } catch (err) {
       console.error("Failed to update product:", err);
     }

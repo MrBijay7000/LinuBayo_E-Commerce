@@ -120,6 +120,17 @@
 
 .cart-icon {
   position: relative;
+  display: inline-block;
+}
+
+.cart-icon svg {
+  color: white;
+  transition: color 0.2s;
+}
+
+.cart-icon:hover svg {
+  color: black;
+  cursor: pointer;
 }
 
 .cart-badge {
@@ -368,20 +379,4 @@
   .nav-auth-btn span {
     display: none; /* Optional: hide text on very small screens */
   }
-}
-
-.cart-icon {
-  position: relative;
-  display: inline-block;
-}
-
-.cart-badge {
-  position: absolute;
-  top: -8px;
-  right: -10px;
-  background-color: crimson;
-  color: white;
-  font-size: 0.75rem;
-  padding: 2px 6px;
-  border-radius: 50%;
 }
