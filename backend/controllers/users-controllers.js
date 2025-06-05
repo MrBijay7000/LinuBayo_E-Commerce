@@ -75,7 +75,11 @@ const signup = async (req, res, next) => {
   let token;
   try {
     token = jwt.sign(
-      { userId: createdUser.id, email: createdUser.email },
+      {
+        userId: createdUser.id,
+        email: createdUser.email,
+        role: createdUser.role,
+      },
       "supersecret_dont_share",
       { expiresIn: "1h" }
     );
@@ -92,6 +96,7 @@ const signup = async (req, res, next) => {
     email: createdUser.email,
     phonenumber: createdUser.phonenumber,
     token,
+    role: createdUser.role,
     message: "User Created",
   });
 };
@@ -140,7 +145,11 @@ const login = async (req, res, next) => {
   let token;
   try {
     token = jwt.sign(
-      { userId: existingUser.id, email: existingUser.email },
+      {
+        userId: existingUser.id,
+        email: existingUser.email,
+        role: createdUser.role,
+      },
       "supersecret_dont_share",
       { expiresIn: "1h" }
     );
@@ -250,8 +259,24 @@ const getDetails = async (req, res) => {
   }
 };
 
+const getAllCustomers = async (req, res, next) => {
+  try {
+    // Get all users from the database, excluding only the password field
+    const users = await User.find({}, "-password");
+
+    // Return all users regardless of role
+    res.json({ users });
+  } catch (err) {
+    console.log(err);
+    return next(
+      new HttpError("Fetching users failed, please try again later.", 500)
+    );
+  }
+};
+
 exports.signup = signup;
 exports.login = login;
 exports.sendOtp = sendOtp;
 exports.verifyOtp = verifyOtp;
 exports.getDetails = getDetails;
+exports.getAllCustomers = getAllCustomers;

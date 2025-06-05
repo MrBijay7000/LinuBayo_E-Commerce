@@ -1,0 +1,217 @@
+/* CustomersPage.css */
+
+.customers-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.customers-page h1 {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  /* color: #2c3e50; */
+  color: white;
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #0d1823;
+}
+
+/* Add these styles to your CustomersPage.css */
+
+.search-bar-container {
+  margin-bottom: 1.5rem;
+}
+
+.search-bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  padding-right: 2.5rem; /* Space for clear button */
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.search-bar input:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+.clear-search {
+  position: absolute;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  color: #999;
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 0 0.25rem;
+  transition: color 0.2s;
+}
+
+.clear-search:hover {
+  color: #e74c3c;
+}
+
+.search-results-count {
+  font-size: 0.875rem;
+  color: #7f8c8d;
+  margin-top: 0.25rem;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .search-bar input {
+    padding: 0.65rem 0.9rem;
+    padding-right: 2rem;
+  }
+
+  .clear-search {
+    right: 0.5rem;
+  }
+
+  .search-results-count {
+    font-size: 0.8rem;
+  }
+}
+
+.table-container {
+  overflow-x: auto;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  min-width: 600px;
+}
+
+.users-table thead {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: white;
+}
+
+.users-table th {
+  padding: 1rem;
+  text-align: left;
+  font-weight: 500;
+}
+
+.users-table tbody tr {
+  transition: all 0.2s ease;
+}
+
+.users-table tbody tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+.users-table tbody tr:hover {
+  background-color: #e8f4fc;
+}
+
+.users-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #ecf0f1;
+}
+
+.admin-row {
+  background-color: #fff9e6 !important;
+  border-left: 3px solid #ffcc00;
+}
+
+.users-table td[data-role="admin"] {
+  color: #e74c3c;
+  font-weight: 500;
+}
+
+.users-table td[data-role="user"] {
+  color: #2ecc71;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 2rem;
+  color: #7f8c8d;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+}
+
+.pagination button {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #ddd;
+  background: white;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-width: 36px;
+}
+
+.pagination button.active {
+  background: #3498db;
+  color: white;
+  border-color: #3498db;
+}
+
+/* Mobile-specific styles */
+@media (max-width: 768px) {
+  .customers-page {
+    padding: 0.75rem;
+  }
+
+  .customers-page h1 {
+    font-size: 1.25rem;
+  }
+
+  .users-table th,
+  .users-table td {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+  }
+
+  .search-bar input {
+    padding: 0.65rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .users-table th,
+  .users-table td {
+    padding: 0.5rem;
+  }
+
+  .pagination button {
+    padding: 0.4rem 0.6rem;
+    min-width: 30px;
+  }
+}

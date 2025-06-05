@@ -8,7 +8,7 @@ const userSchema = new Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   phonenumber: { type: Number, required: true },
-  role: { type: String, default: "user" },
+  role: { type: String, default: "user", enum: ["user", "admin"] },
 });
 
 userSchema.plugin(uniqueValidator);

@@ -22,6 +22,8 @@ import UsersPaymentPage from "./Users/pages/UsersPaymentPage";
 import OrderSuccessPage from "./Users/pages/OrderSuccessPage";
 import OrderDetailsPage from "./Users/pages/OrderDetailsPage";
 import OrdersListPage from "./Users/pages/OrdersListPage";
+import BestSellerPage from "./Products/Pages/BestSeller";
+import CustomersPage from "./Users/admin/pages/CustomersPage";
 
 const routes = [
   {
@@ -31,6 +33,7 @@ const routes = [
       { path: "/", element: <HomePage /> },
       { path: "/tops", element: <TopsPage /> },
       { path: "/limited-edition", element: <LimitedEditionPage /> },
+      { path: "/best-seller", element: <BestSellerPage /> },
       { path: "/pants", element: <PantsPage /> },
       { path: "/aboutus", element: <AboutUs /> },
       { path: "/auth", element: <AuthPage /> },
@@ -45,6 +48,7 @@ const routes = [
       { path: "/admin/homepage", element: <AdminHomePage /> },
       { path: "/admin/updateProduct/:pid", element: <AdminUpdateProduct /> },
       { path: "/admin/products/:category", element: <AdminCategoryPage /> },
+      { path: "/admin/customersDetails", element: <CustomersPage /> },
     ],
   },
 ];

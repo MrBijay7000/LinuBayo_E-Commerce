@@ -155,11 +155,7 @@ export default function AuthPage() {
       );
       console.log(loginResponse);
 
-      auth.login(
-        loginResponse.userId,
-        loginResponse.token,
-        loginResponse.token
-      );
+      auth.login(loginResponse.userId, loginResponse.token, loginResponse.role);
       console.log(loginResponse);
       toast.success("Account created successfully! Welcome!");
       if (loginResponse.role === "admin") {

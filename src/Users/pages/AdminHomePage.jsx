@@ -17,6 +17,7 @@ import {
 import { BsGraphUp, BsBoxSeam } from "react-icons/bs";
 import { MdOutlineInventory, MdLocalOffer } from "react-icons/md";
 import "./AdminHomePage.css";
+import { NavLink } from "react-router-dom";
 
 const AdminDashboard = () => {
   // Sample data - replace with your actual data
@@ -111,9 +112,9 @@ const AdminDashboard = () => {
           <a href="#">
             <BsBoxSeam /> Orders
           </a>
-          <a href="#">
+          <NavLink to={"/admin/customersDetails"}>
             <FiUsers /> Customers
-          </a>
+          </NavLink>
           <a href="#">
             <MdLocalOffer /> Promotions
           </a>

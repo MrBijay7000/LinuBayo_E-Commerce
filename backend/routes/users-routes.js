@@ -38,5 +38,6 @@ router.post("/login", usersControllers.login);
 router.post("/send-otp", usersControllers.sendOtp);
 router.post("/verify-otp", usersControllers.verifyOtp);
 router.get("/me", auth, usersControllers.getDetails);
+router.get("/getCustomers", auth, usersControllers.getAllCustomers);
 
 module.exports = router;
