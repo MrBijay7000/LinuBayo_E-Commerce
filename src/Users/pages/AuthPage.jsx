@@ -45,20 +45,26 @@ export default function AuthPage() {
     setStep("signup");
     setIsLoginMode((prevMode) => !prevMode);
 
-    setFormData(
-      isLoginMode
-        ? {
-            name: { value: "", isValid: false },
-            email: { value: "", isValid: false },
-            phonenumber: { value: "", isValid: false },
-            password: { value: "", isValid: false },
-          }
-        : {
-            email: { value: "", isValid: false },
-            password: { value: "", isValid: false },
-          },
-      false
-    );
+    // Reset form with proper structure and validation state
+    if (isLoginMode) {
+      setFormData(
+        {
+          name: { value: "", isValid: false },
+          email: { value: "", isValid: false },
+          phonenumber: { value: "", isValid: false },
+          password: { value: "", isValid: false },
+        },
+        false
+      );
+    } else {
+      setFormData(
+        {
+          email: { value: "", isValid: false },
+          password: { value: "", isValid: false },
+        },
+        false
+      );
+    }
   };
 
   const authSubmitHandler = async (event) => {
@@ -84,7 +90,9 @@ export default function AuthPage() {
           password: formState.inputs.password.value,
         }),
         { "Content-Type": "application/json" }
-      );
+      ).catch((err) => {
+        throw err;
+      });
 
       auth.login(responseData.userId, responseData.token, responseData.role);
       toast.success("Login successful!");
@@ -94,7 +102,8 @@ export default function AuthPage() {
         navigate("/");
       }
     } catch (err) {
-      toast.error(err.message || "Authentication failed. Please try again.");
+      // toast.error(err.message || "Authentication failed. Please try again.");
+      throw err;
     }
   };
 
@@ -128,7 +137,9 @@ export default function AuthPage() {
           otp,
         }),
         { "Content-Type": "application/json" }
-      );
+      ).catch((err) => {
+        throw err;
+      });
 
       // Proceed with signup after OTP verification
       const signupResponse = await sendRequest(
@@ -141,7 +152,9 @@ export default function AuthPage() {
           password: formState.inputs.password.value,
         }),
         { "Content-Type": "application/json" }
-      );
+      ).catch((err) => {
+        throw err;
+      });
 
       // Automatically log in the user
       const loginResponse = await sendRequest(
@@ -152,7 +165,9 @@ export default function AuthPage() {
           password: formState.inputs.password.value,
         }),
         { "Content-Type": "application/json" }
-      );
+      ).catch((err) => {
+        throw err;
+      });
       console.log(loginResponse);
 
       auth.login(loginResponse.userId, loginResponse.token, loginResponse.role);
@@ -164,17 +179,20 @@ export default function AuthPage() {
         navigate("/");
       }
     } catch (err) {
-      toast.error(err.message || "Signup failed. Please try again.");
+      // toast.error(err.message || "Signup failed. Please try again.");
     }
   };
 
   return (
     <>
-      {/* <ErrorModal error={error} onClear={clearError} /> */}
+      <ErrorModal error={error} onClear={clearError} />
       <Card className="authentication">
         {(isLoading || isSendingOtp) && <LoadingSpinner asOverlay />}
         <h2>{isLoginMode ? "LOGIN" : "CREATE ACCOUNT"}</h2>
-        <form onSubmit={authSubmitHandler}>
+        <form
+          onSubmit={authSubmitHandler}
+          key={isLoginMode ? "login" : "signup"}
+        >
           {!isLoginMode && step === "signup" && (
             <>
               <Input

@@ -114,7 +114,10 @@ export default function ProductItem(props) {
           </div>
 
           <div className="product-item__buttons">
-            <button className="btn-view">
+            <button
+              className="btn-view"
+              onClick={() => navigate(`/product/${props.id}`)}
+            >
               <FaEye className="btn-icon" />
               VIEW DETAILS
             </button>

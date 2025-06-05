@@ -24,6 +24,7 @@ import OrderDetailsPage from "./Users/pages/OrderDetailsPage";
 import OrdersListPage from "./Users/pages/OrdersListPage";
 import BestSellerPage from "./Products/Pages/BestSeller";
 import CustomersPage from "./Users/admin/pages/CustomersPage";
+import ProductDetailsPage from "./Products/Pages/ProductDetailsPage";
 
 const routes = [
   {
@@ -35,6 +36,8 @@ const routes = [
       { path: "/limited-edition", element: <LimitedEditionPage /> },
       { path: "/best-seller", element: <BestSellerPage /> },
       { path: "/pants", element: <PantsPage /> },
+      { path: "/product/:pid", element: <ProductDetailsPage /> },
+
       { path: "/aboutus", element: <AboutUs /> },
       { path: "/auth", element: <AuthPage /> },
       { path: "/cart", element: <UsersCartPage /> },

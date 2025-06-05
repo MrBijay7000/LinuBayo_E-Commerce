@@ -148,7 +148,7 @@ const login = async (req, res, next) => {
       {
         userId: existingUser.id,
         email: existingUser.email,
-        role: createdUser.role,
+        role: existingUser.role,
       },
       "supersecret_dont_share",
       { expiresIn: "1h" }

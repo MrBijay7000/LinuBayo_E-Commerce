@@ -209,6 +209,13 @@ const getCategories = async (req, res, next) => {
   }
 };
 
+// const getProductDetails = async (req, res, next) => {
+//   const { pid } = req.params;
+//   const product = await Product.findById(pid);
+//   if (!product) return res.status(404).json({ message: "Product not found" });
+//   res.status(200).json(product);
+// };
+
 exports.getCategories = getCategories;
 exports.deleteProduct = deleteProduct;
 exports.addProduct = addProduct;
