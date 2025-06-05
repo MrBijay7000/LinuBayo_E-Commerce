@@ -25,6 +25,7 @@ import OrdersListPage from "./Users/pages/OrdersListPage";
 import BestSellerPage from "./Products/Pages/BestSeller";
 import CustomersPage from "./Users/admin/pages/CustomersPage";
 import ProductDetailsPage from "./Products/Pages/ProductDetailsPage";
+import AdminOrdersPage from "./Users/admin/pages/AdminOrdersPage";
 
 const routes = [
   {
@@ -52,6 +53,7 @@ const routes = [
       { path: "/admin/updateProduct/:pid", element: <AdminUpdateProduct /> },
       { path: "/admin/products/:category", element: <AdminCategoryPage /> },
       { path: "/admin/customersDetails", element: <CustomersPage /> },
+      { path: "/admin/orders", element: <AdminOrdersPage /> },
     ],
   },
 ];

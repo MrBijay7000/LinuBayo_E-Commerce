@@ -90,6 +90,28 @@ const getOrdersByUserId = async (req, res, next) => {
   }
 };
 
+const getAllOrders = async (req, res, next) => {
+  try {
+    const orders = await Order.find()
+      .populate({
+        path: "user",
+        select: "name email",
+      })
+      .populate({
+        path: "items.productId",
+        select: "name image price", // Make sure to include all needed fields
+      });
+
+    res.status(200).json({
+      success: true,
+      count: orders.length,
+      orders: orders,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 // Add to your exports
 
 exports.getOrdersByUserId = getOrdersByUserId;
@@ -97,3 +119,4 @@ exports.getOrdersByUserId = getOrdersByUserId;
 exports.createOrder = createOrder;
 exports.getOrderById = getOrderById;
 exports.getUserIdOrder = getUserIdOrder;
+exports.getAllOrders = getAllOrders;

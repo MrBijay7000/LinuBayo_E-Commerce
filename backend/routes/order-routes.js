@@ -20,6 +20,8 @@ router.post(
   orderController.createOrder
 );
 
+router.get("/allOrder", auth, orderController.getAllOrders);
+
 router.get("/:id", orderController.getOrderById);
 // router.get("/user/:userId", orderController.getUserIdOrder);
 // In your order-routes.js

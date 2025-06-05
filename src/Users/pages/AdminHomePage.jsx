@@ -109,9 +109,9 @@ const AdminDashboard = () => {
           <a href="#">
             <FiShoppingBag /> Products
           </a>
-          <a href="#">
+          <NavLink to="/admin/orders">
             <BsBoxSeam /> Orders
-          </a>
+          </NavLink>
           <NavLink to={"/admin/customersDetails"}>
             <FiUsers /> Customers
           </NavLink>
