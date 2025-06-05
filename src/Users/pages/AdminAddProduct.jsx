@@ -87,8 +87,10 @@ export default function AdminAddProduct() {
   const categories = [
     { value: "tops", label: "Tops" },
     { value: "pants", label: "Pants" },
-    { value: "jackets", label: "Jackets" },
-    { value: "accessories", label: "Accessories" },
+    { value: "dresses", label: "Dresses" },
+    { value: "skirts", label: "Skirts" },
+    { value: "limited", label: "Limited Edition" },
+    { value: "home", label: "Home" },
     // Add more categories as needed
   ];
 

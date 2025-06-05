@@ -5,7 +5,7 @@ export default function LimitedEditionPage() {
   return (
     <div>
       <LimitedEdition3DEffect />
-      <h1>Limited Edition Collection</h1>
+      <SharedCategoryPage category="limited" placeholder="Search dresses..." />
     </div>
   );
 }

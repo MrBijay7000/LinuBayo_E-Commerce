@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+import { FaEye, FaEdit, FaTrashAlt, FaCartPlus } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 import Card from "../../shared/UIElements/Card";
@@ -33,6 +34,10 @@ export default function ProductItem(props) {
   }
 
   function addItemToCartHandler() {
+    if (!auth.isLoggedIn) {
+      navigate("/auth");
+      return;
+    }
     const selectedItem = {
       id: props.id,
       name: props.name,
@@ -109,20 +114,29 @@ export default function ProductItem(props) {
           </div>
 
           <div className="product-item__buttons">
-            <button className="btn-view">VIEW DETAILS</button>
-            <button className="btn-update" onClick={updateProductHandler}>
-              UPDATE
+            <button className="btn-view">
+              <FaEye className="btn-icon" />
+              VIEW DETAILS
             </button>
+
+            {auth.role === "admin" && (
+              <button className="btn-update" onClick={updateProductHandler}>
+                <FaEdit className="btn-icon" />
+                UPDATE
+              </button>
+            )}
             {auth.role === "admin" ? (
               <button
                 className="btn-delete"
                 onClick={showDeleteWarningHandler}
                 disabled={props.isDeleting}
               >
+                <FaTrashAlt className="btn-icon" />
                 DELETE
               </button>
             ) : (
               <button className="btn-addtocart" onClick={addItemToCartHandler}>
+                <FaCartPlus className="btn-icon" />
                 ADD TO CART
               </button>
             )}

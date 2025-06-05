@@ -113,7 +113,10 @@ export default function Navbar() {
             </NavLink>
           )}
 
-          <NavLink to="/cart" className="cart-icon">
+          <NavLink
+            to={auth.isLoggedIn ? "/cart" : "/auth"}
+            className="cart-icon"
+          >
             <FaShoppingBag />
             {totalCartItems > 0 && (
               <span className="cart-badge">{totalCartItems}</span>
