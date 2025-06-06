@@ -1,167 +1,326 @@
-import React, { useState, useEffect } from "react";
-import { FiSearch, FiHeart, FiShoppingCart, FiUser } from "react-icons/fi";
-import { BsStars, BsArrowRight } from "react-icons/bs";
-import { Link } from "react-router-dom";
+import { useEffect, useState, useContext } from "react";
+import { AuthContext } from "../../shared/Context/auth-context";
+import { useNavigate } from "react-router-dom";
+import {
+  ShoppingBag,
+  IndianRupee,
+  Package,
+  Truck,
+  CheckCircle,
+  Clock,
+  AlertCircle,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
+import { toast } from "react-toastify";
+import { motion } from "framer-motion";
 import "./UsersHomePage.css";
 
 export default function UsersHomePage() {
-  const [products, setProducts] = useState([]);
-  const [featuredCategories, setFeaturedCategories] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const { userId, token, isLoggedIn, userName, login } =
+    useContext(AuthContext);
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState({
+    totalOrders: 0,
+    totalSpent: 0,
+    pendingOrders: 0,
+  });
+  const [currentPage, setCurrentPage] = useState(1);
+  const [ordersPerPage] = useState(5);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Simulate API calls
     const fetchData = async () => {
       try {
-        // In a real app, you would fetch these from your backend
-        setFeaturedCategories([
-          { name: "Summer Collection", image: "/images/summer-banner.jpg" },
-          { name: "New Arrivals", image: "/images/new-arrivals.jpg" },
-          { name: "Limited Edition", image: "/images/limited-edition.jpg" },
-        ]);
+        if (!token || !userId) {
+          // toast.error("Please login to view your dashboard");
+          // navigate("/auth");
+          return;
+        }
 
-        setProducts([
+        const response = await fetch(
+          `http://localhost:5001/api/orders/user/${userId}`,
           {
-            id: 1,
-            name: "Classic White Tee",
-            price: 29.99,
-            originalPrice: 39.99,
-            image: "/images/white-tee.jpg",
-            category: "tops",
-            isNew: true,
-          },
-          // Add more sample products...
-        ]);
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
-        setIsLoading(false);
+        if (!response.ok) {
+          throw new Error("Failed to fetch orders");
+        }
+
+        const data = await response.json();
+        const validOrders = Array.isArray(data.orders) ? data.orders : [];
+
+        setOrders(validOrders);
+
+        // Calculate stats
+        const totalOrders = validOrders.length;
+        const totalSpent = validOrders.reduce(
+          (sum, order) => sum + (Number(order.totalAmount) || 0),
+          0
+        );
+        const pendingOrders = validOrders.filter(
+          (o) => o.status && o.status.toLowerCase() === "pending"
+        ).length;
+
+        setStats({
+          totalOrders,
+          totalSpent,
+          pendingOrders,
+        });
       } catch (err) {
-        console.error("Failed to load data:", err);
+        console.error("Failed to fetch orders", err);
+        toast.error("Error loading your orders");
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchData();
-  }, []);
+  }, [userId, token]);
+
+  // Check auth status on component mount
+  useEffect(() => {
+    const checkAuth = async () => {
+      const storedData = JSON.parse(localStorage.getItem("userData"));
+      if (storedData && storedData.token && storedData.userId) {
+        login(storedData.userId, storedData.token, storedData.name);
+      }
+    };
+    checkAuth();
+  }, [login]);
+
+  // Pagination logic
+  const indexOfLastOrder = currentPage * ordersPerPage;
+  const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
+  const currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder);
+  const totalPages = Math.ceil(orders.length / ordersPerPage);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  if (loading) {
+    return (
+      <div className="loading-screen">
+        <div className="spinner"></div>
+        <p>Loading your dashboard...</p>
+      </div>
+    );
+  }
+
+  const getStatusIcon = (status) => {
+    if (!status) return <Package size={16} className="text-gray-500" />;
+
+    const statusLower = status.toLowerCase();
+    switch (statusLower) {
+      case "delivered":
+        return <CheckCircle size={16} className="text-green-500" />;
+      case "shipped":
+        return <Truck size={16} className="text-blue-500" />;
+      case "pending":
+        return <Clock size={16} className="text-yellow-500" />;
+      case "cancelled":
+        return <AlertCircle size={16} className="text-red-500" />;
+      default:
+        return <Package size={16} className="text-gray-500" />;
+    }
+  };
+
+  const formatStatus = (status) => {
+    if (!status) return "Unknown";
+    return status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
+  };
 
   return (
-    <div className="homepage">
-      {/* Hero Banner */}
-      <section className="hero-banner">
-        <div className="hero-content">
-          <h1>Elevate Your Style</h1>
-          <p>Discover our premium collection of clothing for every occasion</p>
-          <Link to="/shop" className="cta-button">
-            Shop Now <BsArrowRight />
-          </Link>
-          <Link to="/order-success" className="cta-button">
-            Shop Now <BsArrowRight />
-          </Link>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="dashboard-container"
+    >
+      <div className="dashboard-header">
+        <h1>
+          Welcome back,{" "}
+          <span className="text-primary">{userName || "Customer"}</span> 👋
+        </h1>
+        <p className="subtitle">Here's your complete order history</p>
+      </div>
+
+      {/* Stats Cards */}
+      <div className="stats-grid">
+        <motion.div
+          whileHover={{ y: -5 }}
+          className="stat-card bg-gradient-to-br from-blue-50 to-blue-100"
+        >
+          <div className="stat-icon bg-blue-100 text-blue-600">
+            <ShoppingBag size={20} />
+          </div>
+          <div>
+            <p className="stat-title">Total Orders</p>
+            <p className="stat-value">{stats.totalOrders}</p>
+          </div>
+        </motion.div>
+
+        <motion.div
+          whileHover={{ y: -5 }}
+          className="stat-card bg-gradient-to-br from-green-50 to-green-100"
+        >
+          <div className="stat-icon bg-green-100 text-green-600">
+            <IndianRupee size={20} />
+          </div>
+          <div>
+            <p className="stat-title">Total Spent</p>
+            <p className="stat-value">₹{stats.totalSpent.toLocaleString()}</p>
+          </div>
+        </motion.div>
+
+        <motion.div
+          whileHover={{ y: -5 }}
+          className="stat-card bg-gradient-to-br from-purple-50 to-purple-100"
+        >
+          <div className="stat-icon bg-purple-100 text-purple-600">
+            <Package size={20} />
+          </div>
+          <div>
+            <p className="stat-title">Pending Orders</p>
+            <p className="stat-value">{stats.pendingOrders}</p>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* All Orders */}
+      <div className="recent-orders">
+        <div className="section-header">
+          <h2>Your Order History</h2>
         </div>
-      </section>
 
-      {/* Navigation Bar */}
+        {orders.length > 0 ? (
+          <>
+            <div className="orders-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Order ID</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Total</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {currentOrders.map((order) => {
+                    const status = order.status
+                      ? order.status.toLowerCase()
+                      : "unknown";
+                    return (
+                      <motion.tr
+                        key={order._id || Math.random()}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        whileHover={{
+                          backgroundColor: "rgba(249, 250, 251, 0.8)",
+                        }}
+                      >
+                        <td className="font-medium">
+                          #{order._id ? order._id.substring(0, 8) : "N/A"}
+                        </td>
+                        <td>
+                          {/* {order.createdAt
+                            ? new Date(order.createdAt).toLocaleDateString()
+                            : "N/A"} */}
+                          {order.createdAt
+                            ? new Date(order.createdAt).toLocaleDateString()
+                            : order.orderDate
+                            ? new Date(order.orderDate).toLocaleDateString()
+                            : "N/A"}
+                        </td>
+                        <td>
+                          <div className={`status-badge status-${status}`}>
+                            {getStatusIcon(status)}
+                            {/* <span>{formatStatus(order.status)}</span> */}
+                            <span>
+                              {formatStatus(
+                                order.status || order.orderStatus || "unknown"
+                              )}
+                            </span>
+                          </div>
+                        </td>
+                        <td className="font-medium">
+                          ₹
+                          {order.totalAmount
+                            ? order.totalAmount.toFixed(2)
+                            : "0.00"}
+                        </td>
+                        <td>
+                          <button
+                            onClick={() =>
+                              order._id && navigate(`/orders/${order._id}`)
+                            }
+                            className="view-btn"
+                            disabled={!order._id}
+                          >
+                            View
+                          </button>
+                        </td>
+                      </motion.tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
 
-      {/* Featured Categories */}
-      <section className="featured-categories">
-        <h2>Shop by Category</h2>
-        <div className="category-grid">
-          {featuredCategories.map((category, index) => (
-            <Link
-              to={`/category/${category.name.toLowerCase().replace(" ", "-")}`}
-              key={index}
-              className="category-card"
-            >
-              <img src={category.image} alt={category.name} />
-              <div className="category-overlay">
-                <h3>{category.name}</h3>
-                <button className="explore-button">Explore</button>
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="pagination">
+                <button
+                  onClick={() => paginate(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className="pagination-btn"
+                >
+                  <ChevronLeft size={18} />
+                </button>
+
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                  (number) => (
+                    <button
+                      key={number}
+                      onClick={() => paginate(number)}
+                      className={`pagination-btn ${
+                        currentPage === number ? "active" : ""
+                      }`}
+                    >
+                      {number}
+                    </button>
+                  )
+                )}
+
+                <button
+                  onClick={() => paginate(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  className="pagination-btn"
+                >
+                  <ChevronRight size={18} />
+                </button>
               </div>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* New Arrivals */}
-      <section className="new-arrivals">
-        <div className="section-header">
-          <h2>
-            New Arrivals <BsStars className="star-icon" />
-          </h2>
-          <Link to="/new-arrivals" className="view-all">
-            View All
-          </Link>
-        </div>
-
-        <div className="product-grid">
-          {products
-            .filter((p) => p.isNew)
-            .map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-        </div>
-      </section>
-
-      {/* Best Sellers */}
-      <section className="best-sellers">
-        <div className="section-header">
-          <h2>Best Sellers</h2>
-          <Link to="/best-sellers" className="view-all">
-            View All
-          </Link>
-        </div>
-
-        <div className="product-grid">
-          {products.slice(0, 4).map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
-      </section>
-
-      {/* Special Offer Banner */}
-      <section className="special-offer">
-        <div className="offer-content">
-          <h2>Summer Sale - Up to 50% Off</h2>
-          <p>Limited time offer on selected items</p>
-          <Link to="/summer-sale" className="cta-button">
-            Shop the Sale
-          </Link>
-        </div>
-      </section>
-    </div>
+            )}
+          </>
+        ) : (
+          <div className="empty-state">
+            <Package size={48} className="text-gray-400" />
+            <h3>No orders yet</h3>
+            <p>You haven't placed any orders yet</p>
+            <button
+              onClick={() => navigate("/products")}
+              className="primary-btn"
+            >
+              Start Shopping
+            </button>
+          </div>
+        )}
+      </div>
+    </motion.div>
   );
 }
-
-// Product Card Component
-const ProductCard = ({ product }) => {
-  const discount = product.originalPrice
-    ? Math.round(
-        ((product.originalPrice - product.price) / product.originalPrice) * 100
-      )
-    : 0;
-
-  return (
-    <div className="product-card">
-      <Link to={`/product/${product.id}`}>
-        <div className="product-image">
-          <img src={product.image} alt={product.name} />
-          {product.isNew && <span className="new-badge">New</span>}
-          {discount > 0 && <span className="discount-badge">-{discount}%</span>}
-          <button className="quick-view">Quick View</button>
-        </div>
-
-        <div className="product-info">
-          <h3>{product.name}</h3>
-          <div className="price">
-            {product.originalPrice && (
-              <span className="original-price">
-                ${product.originalPrice.toFixed(2)}
-              </span>
-            )}
-            <span className="current-price">${product.price.toFixed(2)}</span>
-          </div>
-        </div>
-      </Link>
-    </div>
-  );
-};
-
-// export default HomePage;
