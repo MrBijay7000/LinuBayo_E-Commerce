@@ -69,10 +69,18 @@ const ProductDetailsPage = () => {
     }
   };
 
+  //   if (isLoading) {
+  //     return (
+  //       <div className="center">
+  //         <LoadingSpinner asOverlay />
+  //       </div>
+  //     );
+  //   }
+
   if (isLoading) {
     return (
-      <div className="center">
-        <LoadingSpinner />
+      <div className="full-page-loading">
+        <LoadingSpinner asOverlay />
       </div>
     );
   }
@@ -88,6 +96,7 @@ const ProductDetailsPage = () => {
   return (
     <>
       <ErrorModal error={error} onClear={clearError} />
+
       {product && (
         <div className="product-details-container">
           <button className="back-button" onClick={() => navigate(-1)}>

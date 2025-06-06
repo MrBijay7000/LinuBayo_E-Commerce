@@ -1,5 +1,10 @@
 const Order = require("../models/Order");
 const { validationResult } = require("express-validator");
+const User = require("../models/User");
+const {
+  sendOrderConfirmationEmail,
+  sendOrderStatusUpdateEmail,
+} = require("../util/emailTemplate");
 
 const createOrder = async (req, res, next) => {
   const errors = validationResult(req);
@@ -11,14 +16,26 @@ const createOrder = async (req, res, next) => {
     if (!req.user || !req.user.id) {
       return res.status(401).json({ message: "Authentication required" });
     }
+
+    // Get user details to include in order and for email
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
     // Add the authenticated user's ID to the order
     const orderData = {
       ...req.body,
-      user: req.user.id, // Assuming you have user ID in req.user from auth middleware
+      user: req.user.id,
+      email: user.email, // Store email with order
     };
 
     const order = new Order(orderData);
     const savedOrder = await order.save();
+
+    // Send order confirmation email (don't await to not block response)
+    sendOrderConfirmationEmail(user.email, savedOrder);
+
     res.status(201).json({
       message: "Order placed successfully",
       order: savedOrder,
@@ -112,7 +129,25 @@ const getAllOrders = async (req, res, next) => {
   }
 };
 
-// Add to your exports
+const updateOrderStatus = async (req, res, next) => {
+  const { orderId } = req.params;
+  const { status } = req.body;
+
+  try {
+    const order = await Order.findById(orderId).populate("user");
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    order.orderStatus = status;
+    await order.save();
+
+    sendOrderStatusUpdateEmail(order, status).catch(console.error);
+    res.status(200).json({ message: "Order status updated", order });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to update order status" });
+  }
+};
 
 exports.getOrdersByUserId = getOrdersByUserId;
 
@@ -120,3 +155,4 @@ exports.createOrder = createOrder;
 exports.getOrderById = getOrderById;
 exports.getUserIdOrder = getUserIdOrder;
 exports.getAllOrders = getAllOrders;
+exports.updateOrderStatus = updateOrderStatus;

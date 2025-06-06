@@ -31,6 +31,10 @@ function UsersCheckoutPage() {
         value: "",
         isValid: false,
       },
+      city: {
+        value: "",
+        isValid: false,
+      },
       paymentMethod: {
         value: "credit-card",
         isValid: true,
@@ -51,6 +55,8 @@ function UsersCheckoutPage() {
       paymentMethod: formState.inputs.paymentMethod.value,
       items: cartCtx.items,
       total: cartCtx.totalAmount + 100,
+      address: formState.inputs.address.value, // This should be set
+      city: formState.inputs.city.value,
     };
 
     try {
@@ -110,6 +116,30 @@ function UsersCheckoutPage() {
             errorText="Please enter a valid address (at least 10 characters)"
             onInput={inputHandler}
           />
+
+          <Input
+            id="city"
+            element="input"
+            label="City"
+            validators={[VALIDATOR_REQUIRE()]}
+            onInput={inputHandler}
+          />
+
+          {/* <Input
+            id="postalCode"
+            element="input"
+            label="Postal Code"
+            validators={[VALIDATOR_REQUIRE()]}
+            onInput={inputHandler}
+          /> */}
+
+          {/* <Input
+            id="country"
+            element="input"
+            label="Country"
+            validators={[VALIDATOR_REQUIRE()]}
+            onInput={inputHandler}
+          /> */}
 
           <div className="order-summary">
             <h2>Order Summary</h2>

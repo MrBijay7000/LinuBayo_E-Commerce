@@ -26,5 +26,6 @@ router.get("/:id", orderController.getOrderById);
 // router.get("/user/:userId", orderController.getUserIdOrder);
 // In your order-routes.js
 router.get("/user/:userId", orderController.getOrdersByUserId);
+router.patch("/:orderId", auth, orderController.updateOrderStatus);
 
 module.exports = router;

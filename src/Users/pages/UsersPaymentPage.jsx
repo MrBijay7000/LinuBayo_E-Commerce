@@ -48,6 +48,16 @@ function UsersPaymentPage() {
         value: "",
         isValid: false,
       },
+      address: {
+        // Add this
+        value: cartCtx.orderDetails?.address || "", // Initialize with order details if available
+        isValid: true, // Set to true if you've already validated in checkout
+      },
+      city: {
+        // Add this
+        value: cartCtx.orderDetails?.city || "", // Initialize with order details if available
+        isValid: true, // Set to true if you've already validated in checkout
+      },
     },
     false
   );
@@ -80,6 +90,12 @@ function UsersPaymentPage() {
         user: userId, // Add user ID from auth context
         totalAmount: cartCtx.totalAmount,
         paymentStatus: "completed",
+        shippingAddress: {
+          address: formState.inputs.address.value,
+          city: formState.inputs.city.value,
+          // postalCode: formState.inputs.postalCode.value,
+          // country: formState.inputs.country.value,
+        },
         // ... rest of your order data
       };
 

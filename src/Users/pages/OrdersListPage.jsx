@@ -4,6 +4,7 @@ import { useAuth } from "../../shared/hooks/auth-hook";
 import Button from "../../shared/FormElements/Button";
 import "./OrdersListPage.css";
 import LoadingSpinner from "../../shared/UIElements/LoadingSpinner";
+import StatusBadge from "../admin/components/StatusBadge";
 
 function OrdersListPage() {
   const [orders, setOrders] = useState([]);
@@ -101,8 +102,10 @@ function OrdersListPage() {
           <div key={order._id} className="order-card">
             <div className="order-header">
               <h3>Order #{order._id.slice(-6).toUpperCase()}</h3>
-              <span className={`status ${order.orderStatus.toLowerCase()}`}>
-                {order.orderStatus}
+              {/* <span className={`status ${order.orderStatus.toLowerCase()}`}> */}
+              <span>
+                <StatusBadge status={order.orderStatus} />
+                {/* {order.orderStatus} */}
               </span>
             </div>
 

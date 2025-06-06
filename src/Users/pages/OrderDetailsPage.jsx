@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import Button from "../../shared/FormElements/Button";
 import "./OrderDetailsPage.css";
 import LoadingSpinner from "../../shared/UIElements/LoadingSpinner";
+import StatusBadge from "../admin/components/StatusBadge";
 
 function OrderDetailsPage() {
   const { orderId } = useParams();
@@ -62,9 +63,10 @@ function OrderDetailsPage() {
         <p>Placed on {new Date(order.orderDate).toLocaleDateString()}</p>
         <p>
           Status:{" "}
-          <span className={`status ${order.orderStatus}`}>
+          {/* <span className={`status ${order.orderStatus}`}>
             {order.orderStatus}
-          </span>
+          </span> */}
+          <StatusBadge status={order.orderStatus} />
         </p>
       </div>
 
