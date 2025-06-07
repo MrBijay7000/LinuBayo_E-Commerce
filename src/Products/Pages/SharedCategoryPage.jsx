@@ -16,7 +16,8 @@ export default function SharedCategoryPage({ category, placeholder }) {
         const responseData = await sendRequest(
           `http://localhost:5001/api/products/${category}`
         );
-        setLoadedProducts(responseData.products || responseData);
+        console.log(responseData);
+        setLoadedProducts(responseData.products);
       } catch (err) {
         console.error("Failed to fetch products:", err);
       }

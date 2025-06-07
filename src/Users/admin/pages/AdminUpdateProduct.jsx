@@ -1,11 +1,11 @@
 import { useParams, useNavigate } from "react-router-dom";
-import Input from "../../shared/FormElements/Input";
-import Button from "../../shared/FormElements/Button";
-import { VALIDATOR_REQUIRE, VALIDATOR_MIN } from "../../util/validators";
-import { useForm } from "../../shared/hooks/form-hook";
-import { useHttpClient } from "../../shared/hooks/http-hook";
-import ErrorModal from "../../shared/UIElements/ErrorModal";
-import LoadingSpinner from "../../shared/UIElements/LoadingSpinner";
+import Input from "../../../shared/FormElements/Input";
+import Button from "../../../shared/FormElements/Button";
+import { VALIDATOR_REQUIRE, VALIDATOR_MIN } from "../../../util/validators";
+import { useForm } from "../../../shared/hooks/form-hook";
+import { useHttpClient } from "../../../shared/hooks/http-hook";
+import ErrorModal from "../../../shared/UIElements/ErrorModal";
+import LoadingSpinner from "../../../shared/UIElements/LoadingSpinner";
 import { useEffect, useState } from "react";
 import "./Product.css";
 

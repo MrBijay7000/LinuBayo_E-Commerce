@@ -122,7 +122,7 @@ const getProductByCategory = async (req, res, next) => {
         .json({ message: "No products found in this category" });
     }
 
-    res.status(200).json(products);
+    res.status(200).json({ products });
   } catch (err) {
     next(err);
   }

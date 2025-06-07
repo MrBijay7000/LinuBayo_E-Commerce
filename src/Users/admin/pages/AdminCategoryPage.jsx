@@ -1,9 +1,9 @@
 // Create a new file AdminCategoryPage.js
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useHttpClient } from "../../shared/hooks/http-hook";
-import LoadingSpinner from "../../shared/UIElements/LoadingSpinner";
-import ProductList from "../../Products/Components/ProductList";
+import { useHttpClient } from "../../../shared/hooks/http-hook";
+import LoadingSpinner from "../../../shared/UIElements/LoadingSpinner";
+import ProductList from "../../../Products/Components/ProductList";
 
 export default function AdminCategoryPage() {
   const { category } = useParams();

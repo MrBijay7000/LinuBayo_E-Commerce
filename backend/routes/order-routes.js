@@ -22,10 +22,11 @@ router.post(
 
 router.get("/allOrder", auth, orderController.getAllOrders);
 
-router.get("/:id", orderController.getOrderById);
 // router.get("/user/:userId", orderController.getUserIdOrder);
 // In your order-routes.js
 router.get("/user/:userId", orderController.getOrdersByUserId);
 router.patch("/:orderId", auth, orderController.updateOrderStatus);
-
+router.get("/sales-overview", orderController.salesOverview);
+router.get("/revenue-by-category", orderController.revenueByCategory);
+router.get("/:id", orderController.getOrderById);
 module.exports = router;

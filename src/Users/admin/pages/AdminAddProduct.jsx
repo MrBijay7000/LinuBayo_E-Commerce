@@ -1,16 +1,16 @@
 import { useState } from "react";
-import Input from "../../shared/FormElements/Input";
-import Button from "../../shared/FormElements/Button";
+import Input from "../../../shared/FormElements/Input";
+import Button from "../../../shared/FormElements/Button";
 import {
   VALIDATOR_REQUIRE,
   VALIDATOR_MIN,
   VALIDATOR_MINLENGTH,
-} from "../../util/validators";
-import { useForm } from "../../shared/hooks/form-hook";
-import { useHttpClient } from "../../shared/hooks/http-hook";
-import ErrorModal from "../../shared/UIElements/ErrorModal";
-import LoadingSpinner from "../../shared/UIElements/LoadingSpinner";
-import ImageUpload from "../../shared/FormElements/ImageUpload";
+} from "../../../util/validators";
+import { useForm } from "../../../shared/hooks/form-hook";
+import { useHttpClient } from "../../../shared/hooks/http-hook";
+import ErrorModal from "../../../shared/UIElements/ErrorModal";
+import LoadingSpinner from "../../../shared/UIElements/LoadingSpinner";
+import ImageUpload from "../../../shared/FormElements/ImageUpload";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "./Product.css";

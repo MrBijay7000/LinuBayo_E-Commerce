@@ -149,6 +149,166 @@ const updateOrderStatus = async (req, res, next) => {
   }
 };
 
+const salesOverview = async (req, res, next) => {
+  try {
+    // Example aggregation query for MongoDB
+    const salesData = await Order.aggregate([
+      {
+        $match: {
+          orderDate: {
+            $gte: new Date(new Date() - 30 * 24 * 60 * 60 * 1000), // Last 30 days
+          },
+          orderStatus: { $ne: "cancelled" }, // Exclude cancelled orders if needed
+        },
+      },
+      {
+        $group: {
+          _id: {
+            $dateToString: { format: "%Y-%m-%d", date: "$orderDate" },
+          },
+          totalSales: { $sum: "$totalAmount" },
+        },
+      },
+      {
+        $project: {
+          timePeriod: "$_id",
+          totalSales: 1,
+          _id: 0,
+        },
+      },
+      { $sort: { timePeriod: 1 } },
+    ]);
+
+    res.json({
+      success: true,
+      salesData,
+    });
+  } catch (err) {
+    console.error("Error in salesOverview:", err);
+    res.status(500).json({
+      success: false,
+      error: err.message,
+    });
+  }
+};
+
+// const revenueByCategory = async (req, res, next) => {
+//   try {
+//     const categoryData = await Order.aggregate([
+//       { $match: { orderStatus: { $ne: "cancelled" } } }, // Exclude cancelled orders
+//       { $unwind: "$items" },
+//       {
+//         $lookup: {
+//           from: "products",
+//           localField: "items.productId",
+//           foreignField: "_id",
+//           as: "productDetails",
+//         },
+//       },
+//       {
+//         $unwind: { path: "$productDetails" },
+//         // $unwind: { path: "$productDetails", preserveNullAndEmptyArrays: true },
+//       },
+//       {
+//         $group: {
+//           _id: "$productDetails.category" || "Uncategorized",
+//           totalRevenue: {
+//             $sum: {
+//               $multiply: [
+//                 { $ifNull: ["$items.price", 0] },
+//                 { $ifNull: ["$items.quantity", 0] },
+//               ],
+//             },
+//           },
+//           count: { $sum: 1 },
+//         },
+//       },
+//       {
+//         $project: {
+//           categoryName: "$_id",
+//           totalRevenue: 1,
+//           count: 1,
+//           _id: 0,
+//         },
+//       },
+//       { $sort: { totalRevenue: -1 } },
+//     ]);
+
+//     console.log("Final aggregation result:", categoryData);
+
+//     res.json({
+//       success: true,
+//       data:
+//         categoryData.length > 0
+//           ? categoryData
+//           : [{ categoryName: "No data available", totalRevenue: 0, count: 0 }],
+//     });
+//   } catch (err) {
+//     console.error("Error in revenueByCategory:", err);
+//     res.status(500).json({
+//       success: false,
+//       error: err.message,
+//     });
+//   }
+// };
+
+const revenueByCategory = async (req, res, next) => {
+  try {
+    const categoryData = await Order.aggregate([
+      { $match: { orderStatus: { $ne: "cancelled" } } },
+      { $unwind: "$items" },
+      {
+        $lookup: {
+          from: "products",
+          localField: "items.productId",
+          foreignField: "_id",
+          as: "productDetails",
+        },
+      },
+      {
+        $unwind: { path: "$productDetails" },
+        //         // $unwind: { path: "$productDetails", preserveNullAndEmptyArrays: true },
+      },
+      {
+        $group: {
+          _id: { $ifNull: ["$productDetails.category", "Uncategorized"] },
+          totalRevenue: {
+            $sum: {
+              $multiply: [
+                { $ifNull: ["$items.price", 0] },
+                { $ifNull: ["$items.quantity", 0] },
+              ],
+            },
+          },
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $project: {
+          categoryName: "$_id",
+          totalRevenue: 1,
+          count: 1,
+          _id: 0,
+        },
+      },
+      { $sort: { totalRevenue: -1 } },
+    ]);
+
+    res.json({
+      success: true,
+      data: categoryData.length
+        ? categoryData
+        : [{ categoryName: "No data available", totalRevenue: 0, count: 0 }],
+    });
+  } catch (err) {
+    console.error("Error in revenueByCategory:", err);
+    res.status(500).json({
+      success: false,
+      error: err.message,
+    });
+  }
+};
+
 exports.getOrdersByUserId = getOrdersByUserId;
 
 exports.createOrder = createOrder;
@@ -156,3 +316,5 @@ exports.getOrderById = getOrderById;
 exports.getUserIdOrder = getUserIdOrder;
 exports.getAllOrders = getAllOrders;
 exports.updateOrderStatus = updateOrderStatus;
+exports.salesOverview = salesOverview;
+exports.revenueByCategory = revenueByCategory;

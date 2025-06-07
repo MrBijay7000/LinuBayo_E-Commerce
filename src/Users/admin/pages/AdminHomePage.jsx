@@ -18,6 +18,8 @@ import { BsGraphUp, BsBoxSeam } from "react-icons/bs";
 import { MdOutlineInventory, MdLocalOffer } from "react-icons/md";
 import "./AdminHomePage.css";
 import { NavLink } from "react-router-dom";
+import SalesOverviewChart from "../components/SalesOverview";
+import RevenueByCategoryChart from "../components/RevenueByCategoryChart";
 
 const AdminDashboard = () => {
   // Sample data - replace with your actual data
@@ -173,12 +175,9 @@ const AdminDashboard = () => {
           {/* Charts Row */}
           <div className="charts-row">
             <div className="chart-container">
-              <h3>Sales Overview</h3>
+              <h3>Sales Overview By Date</h3>
+
               {/* <div className="chart-placeholder">
-                {/* Replace with your actual chart component *
-                <div className="mock-chart"></div>
-              </div> */}
-              <div className="chart-placeholder">
                 <ResponsiveContainer width="100%" height={300}>
                   <PieChart>
                     <Pie
@@ -201,7 +200,8 @@ const AdminDashboard = () => {
                     <Legend />
                   </PieChart>
                 </ResponsiveContainer>
-              </div>
+              </div> */}
+              <SalesOverviewChart />
             </div>
             <div className="chart-container">
               <h3>Revenue by Category</h3>
@@ -209,8 +209,8 @@ const AdminDashboard = () => {
                 {/* Replace with your actual chart component *
                 <div className="mock-chart pie"></div>
               </div> */}
-
-              <div className="chart-placeholder">
+              <RevenueByCategoryChart />
+              {/* <div className="chart-placeholder">
                 <ResponsiveContainer width="100%" height={300}>
                   <PieChart>
                     <Pie
@@ -233,7 +233,7 @@ const AdminDashboard = () => {
                     <Legend />
                   </PieChart>
                 </ResponsiveContainer>
-              </div>
+              </div> */}
             </div>
           </div>
 
