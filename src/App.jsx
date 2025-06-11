@@ -26,6 +26,10 @@ import BestSellerPage from "./Products/Pages/BestSeller";
 import CustomersPage from "./Users/admin/pages/CustomersPage";
 import ProductDetailsPage from "./Products/Pages/ProductDetailsPage";
 import AdminOrdersPage from "./Users/admin/pages/AdminOrdersPage";
+import ProtectedAdminRoute from "./Users/admin/pages/ProtectedAdminRoute";
+import DressesPage from "./Products/Pages/DressesPage";
+import SkirtsPage from "./Products/Pages/SkirtsPage";
+import CoordsPage from "./Products/Pages/CoordsPage";
 
 const routes = [
   {
@@ -37,6 +41,9 @@ const routes = [
       { path: "/limited-edition", element: <LimitedEditionPage /> },
       { path: "/best-seller", element: <BestSellerPage /> },
       { path: "/pants", element: <PantsPage /> },
+      { path: "/dresses", element: <DressesPage /> },
+      { path: "/skirts", element: <SkirtsPage /> },
+      { path: "/coord", element: <CoordsPage /> },
       { path: "/product/:pid", element: <ProductDetailsPage /> },
 
       { path: "/aboutus", element: <AboutUs /> },
@@ -48,12 +55,20 @@ const routes = [
       { path: "/orders", element: <OrdersListPage /> },
       { path: "/orders/:orderId", element: <OrderDetailsPage /> },
       { path: "/users/home", element: <UsersHomePage /> },
-      { path: "/admin/addProduct", element: <AdminAddProduct /> },
-      { path: "/admin/homepage", element: <AdminHomePage /> },
-      { path: "/admin/updateProduct/:pid", element: <AdminUpdateProduct /> },
-      { path: "/admin/products/:category", element: <AdminCategoryPage /> },
-      { path: "/admin/customersDetails", element: <CustomersPage /> },
-      { path: "/admin/orders", element: <AdminOrdersPage /> },
+      {
+        element: <ProtectedAdminRoute />,
+        children: [
+          { path: "/admin/addProduct", element: <AdminAddProduct /> },
+          { path: "/admin/homepage", element: <AdminHomePage /> },
+          {
+            path: "/admin/updateProduct/:pid",
+            element: <AdminUpdateProduct />,
+          },
+          { path: "/admin/products/:category", element: <AdminCategoryPage /> },
+          { path: "/admin/customersDetails", element: <CustomersPage /> },
+          { path: "/admin/orders", element: <AdminOrdersPage /> },
+        ],
+      },
     ],
   },
 ];

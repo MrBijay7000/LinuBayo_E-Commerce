@@ -5,7 +5,7 @@ export default function HomePage() {
   return (
     <>
       <ImageSlider />
-      <SharedCategoryPage category="home" placeholder="Search dresses..." />
+      <SharedCategoryPage category="home" />
     </>
   );
 }

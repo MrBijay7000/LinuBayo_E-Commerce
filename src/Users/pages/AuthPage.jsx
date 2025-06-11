@@ -120,6 +120,9 @@ export default function AuthPage() {
       toast.info("OTP sent to your email. Check your inbox!");
       setStep("otp");
     } catch (err) {
+      if (err.message.includes("User already exists")) {
+        toast.error("This email is already registered. Please log in.");
+      }
       toast.error(err.message || "Failed to send OTP. Please try again.");
     } finally {
       setIsSendingOtp(false);
@@ -137,9 +140,7 @@ export default function AuthPage() {
           otp,
         }),
         { "Content-Type": "application/json" }
-      ).catch((err) => {
-        throw err;
-      });
+      );
 
       // Proceed with signup after OTP verification
       const signupResponse = await sendRequest(
@@ -152,9 +153,7 @@ export default function AuthPage() {
           password: formState.inputs.password.value,
         }),
         { "Content-Type": "application/json" }
-      ).catch((err) => {
-        throw err;
-      });
+      );
 
       // Automatically log in the user
       const loginResponse = await sendRequest(
@@ -165,9 +164,7 @@ export default function AuthPage() {
           password: formState.inputs.password.value,
         }),
         { "Content-Type": "application/json" }
-      ).catch((err) => {
-        throw err;
-      });
+      );
       console.log(loginResponse);
 
       auth.login(loginResponse.userId, loginResponse.token, loginResponse.role);
@@ -179,7 +176,7 @@ export default function AuthPage() {
         navigate("/");
       }
     } catch (err) {
-      // toast.error(err.message || "Signup failed. Please try again.");
+      toast.error(err.message || "Signup failed. Please try again.");
     }
   };
 

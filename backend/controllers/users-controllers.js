@@ -222,21 +222,24 @@ const verifyOtp = async (req, res, next) => {
   const { email, otp } = req.body;
 
   if (!email || !otp) {
-    return res.status(400).json({ message: "Email and OTP are required" });
+    return next(new HttpError("Email and OTP are required", 400));
   }
 
   const storedOtp = otpStore.get(email);
 
   if (!storedOtp) {
-    return res.status(400).json({ message: "OTP has expired or was not sent" });
+    return next(new HttpError("OTP has expired or was not sent", 400));
   }
 
   if (storedOtp !== otp) {
-    return res.status(400).json({ message: "Invalid OTP" });
+    return next(new HttpError("Invalid OTP", 400));
   }
 
   otpStore.delete(email);
-  return res.status(200).json({ message: "OTP verified" });
+  res.status(200).json({
+    message: "OTP verified",
+    verified: true,
+  });
 };
 
 // In your usersControllers.getDetails
