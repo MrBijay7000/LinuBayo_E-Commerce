@@ -64,9 +64,11 @@ export default function Navbar() {
         <form className="search-container" onSubmit={handleSearch}>
           <input
             type="text"
-            placeholder="Search for clothes..."
+            // placeholder="Search for clothes..."
+            placeholder="Not Working at a moment..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
+            disabled
           />
           <button type="submit" style={{ background: "none", border: "none" }}>
             <FaSearch />
